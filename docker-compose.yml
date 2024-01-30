@@ -11,7 +11,7 @@ services:
       MYSQL_USER: gian
       MYSQL_PASSWORD: 3636
     ports:
-      - "6033:3306"
+      - "3306:3306"
     volumes:
       - dbdata:/var/lib/mysql
   phpmyadmin:
@@ -32,8 +32,13 @@ services:
       dockerfile: Dockerfile
     ports:
       - 3000:3000
+    container_name: api_conta
     environment:
-      USERDB: app_db
+      USERDB: gian
+      HOSTDB: db
+      DBCLIENT: mysql2
+      DBPASSWORD: 3636
+      DBDATABASE: app_db
       PORT: 3000
     volumes:
       - ./upload:/app/upload

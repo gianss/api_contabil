@@ -6,11 +6,13 @@
   "scripts": {
     "start": "node dist/src/index.js",
     "dev": "nodemon",
+    "wait-for-db": "wait-on tcp:db:3306",
     "build": "tsc --project tsconfig.prod.json",
     "test": "jest --watchAll --noStackTrace --passWithNoTests --runInBand",
     "test:full": "npm test -- -c jest-full-config.js --silent",
     "test:unit": "npm test -- -c jest-unit-config.js",
-    "test:integration": "npm test -- -c jest-integration-config.js"
+    "test:integration": "npm test -- -c jest-integration-config.js",
+    "knex": "knex --knexfile ./src/config/knexfile.js"
   },
   "keywords": [],
   "author": "",
