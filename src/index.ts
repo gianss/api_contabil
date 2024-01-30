@@ -10,6 +10,9 @@ const port = config.port
 app.use(express.json())
 app.use(cors())
 app.use(routes)
+app.get('/', (req, res) => {
+    res.send('Hello World!')
+})
 
 app.listen(port, () => {
     console.log(`🚀 Server running on port ${port}`)
