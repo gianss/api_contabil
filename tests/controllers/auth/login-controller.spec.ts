@@ -1,7 +1,9 @@
-import { HttpResponse } from '@/utils/protocols/http-response'
+import { HttpResponse, User } from '@/interfaces/usecases/'
 import { LoginController } from '@/controllers/auth/login-controller'
-import { User } from '@/interfaces/user'
 import { faker } from '@faker-js/faker'
+import { throwError } from '@/tests/mocks'
+import { MissingParamError } from '@/utils/errors'
+import { JwtAdapter } from '@/interfaces/protocols/auth'
 
 const loginRequest = {
     email: faker.internet.email(),
@@ -24,6 +26,9 @@ const loginResponse: User = {
 interface SutTypes {
     sut: LoginController
     userRepositorieSpy: UserRepositorieSpy
+    bcryptAdapterSpy: BcryptAdapterSpy
+    validationSpy: ValidationSpy
+    jwtAdapterSpy: JwtAdapterSpy
 }
 
 class UserRepositorieSpy {
@@ -32,11 +37,35 @@ class UserRepositorieSpy {
     }
 }
 
+class ValidationSpy {
+    validate(input: any): Error {
+        return null
+    }
+}
+
+class JwtAdapterSpy implements JwtAdapter {
+    generateHash(input: any): string {
+        return 'any_hash'
+    }
+}
+
+class BcryptAdapterSpy {
+    compare(password: string, hash: string): boolean {
+        return true
+    }
+}
+
 const makeSut = (): SutTypes => {
     const userRepositorieSpy = new UserRepositorieSpy()
+    const bcryptAdapterSpy = new BcryptAdapterSpy()
+    const validationSpy = new ValidationSpy()
+    const jwtAdapterSpy = new JwtAdapterSpy()
     return {
-        sut: new LoginController(userRepositorieSpy),
-        userRepositorieSpy
+        sut: new LoginController(userRepositorieSpy, bcryptAdapterSpy, validationSpy, jwtAdapterSpy),
+        userRepositorieSpy,
+        bcryptAdapterSpy,
+        validationSpy,
+        jwtAdapterSpy
     }
 }
 
@@ -47,10 +76,31 @@ describe('loginController', () => {
         expect(response.statusCode).toEqual(200)
     })
 
+    test('should return status 400 if validation fail', async () => {
+        const { sut, validationSpy } = makeSut()
+        jest.spyOn(validationSpy, 'validate').mockReturnValue(new MissingParamError('mock'))
+        const response: HttpResponse = await sut.handle(loginRequest)
+        expect(response.statusCode).toEqual(400)
+    })
+
     test('should return status 401 if email is invalid', async () => {
         const { sut, userRepositorieSpy } = makeSut()
         jest.spyOn(userRepositorieSpy, 'login').mockResolvedValueOnce({})
         const response: HttpResponse = await sut.handle(loginRequest)
         expect(response.statusCode).toEqual(401)
+    })
+
+    test('should return status 401 if password is invalid', async () => {
+        const { sut, bcryptAdapterSpy } = makeSut()
+        jest.spyOn(bcryptAdapterSpy, 'compare').mockReturnValue(false)
+        const response: HttpResponse = await sut.handle(loginRequest)
+        expect(response.statusCode).toEqual(401)
+    })
+
+    test('should return status 500 if thrown', async () => {
+        const { sut, userRepositorieSpy } = makeSut()
+        jest.spyOn(userRepositorieSpy, 'login').mockImplementationOnce(throwError)
+        const response: HttpResponse = await sut.handle(loginRequest)
+        expect(response.statusCode).toEqual(500)
     })
 })
