@@ -1,15 +1,6 @@
 {
-  "compilerOptions": {
-    "module": "commonjs",
-    "outDir": "dist",
-    "target": "es2018",
-    "esModuleInterop": true,
-    "allowJs": true,
-    "resolveJsonModule": true
-  },
+  "extends": "./tsconfig.json",
   "exclude": [
-    "dist",
-    "node_modules",
-    "src/**/*.spec.ts"
+    "tests"
   ]
 }
