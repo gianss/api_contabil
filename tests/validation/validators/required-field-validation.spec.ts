@@ -1,4 +1,4 @@
-import { MissingParamError } from '@/errors'
+import { MissingParamError } from '@/utils/errors'
 import { RequiredFieldValidation } from '@/validation/validators'
 
 import { faker } from '@faker-js/faker'

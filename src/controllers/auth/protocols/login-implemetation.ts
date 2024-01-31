@@ -1,3 +1,3 @@
 export interface LoginImplemetation {
-    handle: (request: any) => any
+    handle: (request: any) => Promise<any>
 }
