@@ -1,11 +1,17 @@
 import { HttpResponse } from '@/utils/protocols/http-response'
-import { LoginImplemetation } from './protocols/login-implemetation'
+import { Login } from './protocols/login'
+import { UserRepositorie } from '@/repositories/user-repositorie'
+import { LoginRequest } from './protocols/login-request'
+import { ok, unauthorized } from '@/utils/helpers/http-helper'
 
-export class LoginController implements LoginImplemetation {
-    async handle(request: any): Promise<HttpResponse> {
-        return {
-            statusCode: 200,
-            body: {}
+export class LoginController implements Login {
+    constructor(readonly userRepositorie: UserRepositorie) { }
+
+    async handle(request: LoginRequest): Promise<HttpResponse> {
+        const login = await this.userRepositorie.login(request.email)
+        if (!('id' in login)) {
+            return unauthorized()
         }
+        return ok('teste')
     }
 }

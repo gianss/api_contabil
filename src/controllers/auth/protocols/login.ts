@@ -1,5 +1,5 @@
 import { HttpResponse } from '@/utils/protocols/http-response'
 
-export interface LoginImplemetation {
+export interface Login {
     handle: (request: any) => Promise<HttpResponse>
 }
