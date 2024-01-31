@@ -12,10 +12,10 @@ const knexConnection = {
     },
     migrations: {
         tableName: 'knex_migrations',
-        directory: path.resolve(__dirname, '../migrations')
+        directory: path.resolve(__dirname, '../repositories/migrations')
     },
     seeds: {
-        directory: path.resolve(__dirname, '../seeders')
+        directory: path.resolve(__dirname, '../repositories/seeders')
     }
 }
 
