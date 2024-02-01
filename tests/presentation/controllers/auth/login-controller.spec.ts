@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker'
 import { throwError } from '@/tests/mocks'
 import { MissingParamError } from '@/presentation/errors'
-import { AuthenticationService, BcryptAdapterInterface, JwtAdapterInterface } from '@/domain/protocols/auth'
+import { AuthenticationService, BcryptCompareAdapterInterface, JwtAdapterInterface } from '@/domain/protocols/auth'
 import { User } from '@/presentation/interfaces/user'
 import { LoginController } from '@/presentation/controllers/auth/login-controller'
 import { HttpResponse } from '@/presentation/http/http-response'
@@ -51,7 +51,7 @@ class JwtAdapterSpy implements JwtAdapterInterface {
     }
 }
 
-class BcryptAdapterSpy implements BcryptAdapterInterface {
+class BcryptAdapterSpy implements BcryptCompareAdapterInterface {
     async compare(password: string, hash: string): Promise<boolean> {
         return true
     }

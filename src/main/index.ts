@@ -14,8 +14,10 @@ app.get('/', (req, res) => {
     res.send('Hello World!')
 })
 
-app.listen(port, () => {
-    console.log(`🚀 Server running on port ${port}`)
+const server = app.listen(port, () => {
+    if (process.env.NODE_ENV !== 'test') {
+        console.log(`🚀 Server running on port ${port}`)
+    }
 })
 
-export default app
+export default server

@@ -2,7 +2,7 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 const config = {
-    port: process.env.PORT || 3000,
+    port: process.env.PORT || 4000,
     db_client: process.env.DBCLIENT || 'mysql2',
     db_host: process.env.HOSTDB || '127.0.0.1',
     db_user: process.env.USERDB || 'gian',
