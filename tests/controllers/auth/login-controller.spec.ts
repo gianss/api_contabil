@@ -92,7 +92,7 @@ describe('loginController', () => {
 
     test('should return status 401 if password is invalid', async () => {
         const { sut, bcryptAdapterSpy } = makeSut()
-        jest.spyOn(bcryptAdapterSpy, 'compare').mockRejectedValueOnce(false)
+        jest.spyOn(bcryptAdapterSpy, 'compare').mockResolvedValueOnce(false)
         const response: HttpResponse = await sut.handle(loginRequest)
         expect(response.statusCode).toEqual(401)
     })
