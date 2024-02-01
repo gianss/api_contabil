@@ -1,4 +1,4 @@
 
-export interface JwtAdapter {
-    generateHash(item: any): string
+export interface JwtAdapterInterface {
+    generateHash(item: any): Promise<string>
 }

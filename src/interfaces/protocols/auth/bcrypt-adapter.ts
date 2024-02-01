@@ -1,4 +1,4 @@
 
-export interface BcryptAdapter {
-    compare(password: string, hash: string): boolean
+export interface BcryptAdapterInterface {
+    compare(password: string, hash: string): Promise<boolean>
 }

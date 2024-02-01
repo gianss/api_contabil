@@ -1,5 +1,5 @@
 import { User } from '@/interfaces/usecases/user'
 
 export interface AuthenticationService {
-    login(email: string): Promise<User | {}>
+    login(email: string): Promise<User | undefined>
 }
