@@ -4,7 +4,7 @@ import { Validation } from '@/validation/protocols'
 import { EmailValidation, RequiredFieldValidation, ValidationComposite } from '@/validation/validators'
 import { EmailValidatorAdapter } from '@/validation/validators/email-validator-adapter'
 import { Request, Response } from 'express'
-import { LoginController } from '../controllers/auth/login-controller'
+import { LoginController } from '../../presentation/controllers/auth/login-controller'
 import { BcryptAdapter } from '@/infra/cryptography/bcrypter-adapter'
 
 export class AuthMiddleware {

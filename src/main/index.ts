@@ -1,8 +1,8 @@
 
 import express from 'express'
 import cors from 'cors'
-import routes from './main/routes'
-import config from './infra/config/config'
+import routes from './routes'
+import config from '../infra/config/config'
 const app = express()
 
 const port = config.port

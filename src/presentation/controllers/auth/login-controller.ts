@@ -2,7 +2,7 @@ import { Validation } from '@/validation/protocols'
 import { BcryptAdapterInterface, JwtAdapterInterface, AuthenticationService, Login } from '@/domain/protocols/auth'
 import { unauthorized, badRequest, ok, serverError } from '@/presentation/helpers/http-helper'
 import { HttpResponse } from '@/presentation/http/http-response'
-import { LoginRequest } from '@/presentation/interfaces/login-request'
+import { LoginRequest } from '@/presentation/dtos/login-request'
 
 export class LoginController implements Login {
     constructor(
