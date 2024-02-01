@@ -2,7 +2,7 @@ import { EmailValidation } from '@/validation/validators'
 import { EmailValidatorSpy, throwError } from '@/tests/mocks'
 
 import { faker } from '@faker-js/faker'
-import { InvalidParamError } from '@/main/errors'
+import { InvalidParamError } from '@/presentation/errors'
 
 const field = faker.lorem.word()
 

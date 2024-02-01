@@ -1,4 +1,4 @@
-import { InvalidParamError } from '@/main/errors'
+import { InvalidParamError } from '@/presentation/errors'
 import { CompareFieldsValidation } from '@/validation/validators'
 
 import { faker } from '@faker-js/faker'

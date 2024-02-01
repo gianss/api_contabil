@@ -1,9 +1,11 @@
-import { HttpResponse, User } from '@/domain/usecases'
 import { faker } from '@faker-js/faker'
 import { throwError } from '@/tests/mocks'
-import { MissingParamError } from '@/main/errors'
-import { BcryptAdapterInterface, JwtAdapterInterface } from '@/domain/protocols/auth'
-import { LoginController } from '@/main/controllers/auth/login-controller'
+import { MissingParamError } from '@/presentation/errors'
+import { AuthenticationService, BcryptAdapterInterface, JwtAdapterInterface } from '@/domain/protocols/auth'
+import { User } from '@/presentation/interfaces/user'
+import { LoginController } from '@/presentation/controllers/auth/login-controller'
+import { HttpResponse } from '@/presentation/http/http-response'
+import { Validation } from '@/validation/protocols'
 
 const loginRequest = {
     email: faker.internet.email(),
@@ -31,13 +33,13 @@ interface SutTypes {
     jwtAdapterSpy: JwtAdapterSpy
 }
 
-class UserRepositorieSpy {
+class UserRepositorieSpy implements AuthenticationService {
     async login(email: string): Promise<User | undefined> {
         return loginResponse
     }
 }
 
-class ValidationSpy {
+class ValidationSpy implements Validation {
     validate(input: any): Error {
         return null
     }

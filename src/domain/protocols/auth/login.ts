@@ -1,4 +1,4 @@
-import { HttpResponse } from '@/domain/usecases/http-response'
+import { HttpResponse } from '@/presentation/http/http-response'
 
 export interface Login {
     handle: (request: any) => Promise<HttpResponse>
