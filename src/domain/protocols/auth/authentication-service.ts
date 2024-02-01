@@ -1,4 +1,4 @@
-import { User } from '@/interfaces/usecases/user'
+import { User } from '@/domain/usecases/user'
 
 export interface AuthenticationService {
     login(email: string): Promise<User | undefined>

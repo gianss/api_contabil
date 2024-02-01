@@ -1,4 +1,4 @@
-import { AuthMiddleware } from '@/middlewares/auth-middleware'
+import { AuthMiddleware } from '@/main/middlewares/auth-middleware'
 import { Router } from 'express'
 
 const router = Router()

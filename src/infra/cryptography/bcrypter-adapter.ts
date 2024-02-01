@@ -1,4 +1,4 @@
-import { BcryptAdapterInterface } from '@/interfaces/protocols/auth'
+import { BcryptAdapterInterface } from '@/domain/protocols/auth'
 import bcrypt from 'bcrypt'
 
 export class BcryptAdapter implements BcryptAdapterInterface {

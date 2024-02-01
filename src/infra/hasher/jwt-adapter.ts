@@ -1,5 +1,5 @@
-import config from '@/config/config'
-import { JwtAdapterInterface } from '@/interfaces/protocols/auth'
+import config from '@/infra/config/config'
+import { JwtAdapterInterface } from '@/domain/protocols/auth'
 import jwt from 'jsonwebtoken'
 
 export class JwtAdapter implements JwtAdapterInterface {

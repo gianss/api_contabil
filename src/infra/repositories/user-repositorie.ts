@@ -1,5 +1,5 @@
-import { db } from '@/config/knexfile'
-import { User } from '@/interfaces/usecases/user'
+import { db } from '@/infra/config/knexfile'
+import { User } from '@/domain/usecases/user'
 
 export class UserRepositorie {
     async login(email: string): Promise<User | undefined> {

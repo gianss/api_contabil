@@ -1,9 +1,9 @@
-import { HttpResponse, User } from '@/interfaces/usecases/'
-import { LoginController } from '@/controllers/auth/login-controller'
+import { HttpResponse, User } from '@/domain/usecases'
 import { faker } from '@faker-js/faker'
 import { throwError } from '@/tests/mocks'
-import { MissingParamError } from '@/utils/errors'
-import { BcryptAdapterInterface, JwtAdapterInterface } from '@/interfaces/protocols/auth'
+import { MissingParamError } from '@/main/errors'
+import { BcryptAdapterInterface, JwtAdapterInterface } from '@/domain/protocols/auth'
+import { LoginController } from '@/main/controllers/auth/login-controller'
 
 const loginRequest = {
     email: faker.internet.email(),

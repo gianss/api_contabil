@@ -1,7 +1,7 @@
-import { LoginRequest, HttpResponse } from '../../interfaces/usecases/'
-import { badRequest, ok, serverError, unauthorized } from '@/utils/helpers/http-helper'
+import { badRequest, ok, serverError, unauthorized } from '@/main/helpers/http-helper'
 import { Validation } from '@/validation/protocols'
-import { BcryptAdapterInterface, JwtAdapterInterface, AuthenticationService, Login } from '@/interfaces/protocols/auth/'
+import { BcryptAdapterInterface, JwtAdapterInterface, AuthenticationService, Login } from '@/domain/protocols/auth'
+import { HttpResponse, LoginRequest } from '@/domain/usecases'
 
 export class LoginController implements Login {
     constructor(
@@ -27,7 +27,6 @@ export class LoginController implements Login {
             }
             return ok(this.jwtAdapter.generateHash({ id: login.id, email: login.email }))
         } catch (error) {
-            console.log(error)
             return serverError(error)
         }
     }
