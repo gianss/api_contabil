@@ -3,7 +3,7 @@ import { LoginController } from '@/controllers/auth/login-controller'
 import { faker } from '@faker-js/faker'
 import { throwError } from '@/tests/mocks'
 import { MissingParamError } from '@/utils/errors'
-import { JwtAdapter } from '@/interfaces/protocols/auth'
+import { BcryptAdapterInterface, JwtAdapterInterface } from '@/interfaces/protocols/auth'
 
 const loginRequest = {
     email: faker.internet.email(),
@@ -32,7 +32,7 @@ interface SutTypes {
 }
 
 class UserRepositorieSpy {
-    async login(email: string): Promise<User | {}> {
+    async login(email: string): Promise<User | undefined> {
         return loginResponse
     }
 }
@@ -43,14 +43,14 @@ class ValidationSpy {
     }
 }
 
-class JwtAdapterSpy implements JwtAdapter {
-    generateHash(input: any): string {
+class JwtAdapterSpy implements JwtAdapterInterface {
+    async generateHash(input: any): Promise<string> {
         return 'any_hash'
     }
 }
 
-class BcryptAdapterSpy {
-    compare(password: string, hash: string): boolean {
+class BcryptAdapterSpy implements BcryptAdapterInterface {
+    async compare(password: string, hash: string): Promise<boolean> {
         return true
     }
 }
@@ -85,14 +85,14 @@ describe('loginController', () => {
 
     test('should return status 401 if email is invalid', async () => {
         const { sut, userRepositorieSpy } = makeSut()
-        jest.spyOn(userRepositorieSpy, 'login').mockResolvedValueOnce({})
+        jest.spyOn(userRepositorieSpy, 'login').mockResolvedValueOnce(undefined)
         const response: HttpResponse = await sut.handle(loginRequest)
         expect(response.statusCode).toEqual(401)
     })
 
     test('should return status 401 if password is invalid', async () => {
         const { sut, bcryptAdapterSpy } = makeSut()
-        jest.spyOn(bcryptAdapterSpy, 'compare').mockReturnValue(false)
+        jest.spyOn(bcryptAdapterSpy, 'compare').mockRejectedValueOnce(false)
         const response: HttpResponse = await sut.handle(loginRequest)
         expect(response.statusCode).toEqual(401)
     })
