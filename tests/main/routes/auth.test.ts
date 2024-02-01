@@ -9,6 +9,7 @@ describe('Auth Middleware Integration Test', () => {
                 email: 'gian_ss@live.com',
                 password: '123'
             })
+        console.log(response.body)
         expect(response.status).toBe(200)
     })
 
@@ -19,7 +20,6 @@ describe('Auth Middleware Integration Test', () => {
                 email: 'email_invalido',
                 password: ''
             })
-
         expect(response.status).toBe(400)
     })
 
@@ -30,7 +30,6 @@ describe('Auth Middleware Integration Test', () => {
                 email: 'email_valido@teste.com',
                 password: 'senha_valida'
             })
-
         expect(response.status).toBe(401)
     })
 })

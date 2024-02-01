@@ -26,7 +26,7 @@ export class LoginController implements Login {
             if (!isValid) {
                 return unauthorized()
             }
-            return ok(this.jwtAdapter.generateHash({ id: login.id, email: login.email }))
+            return ok({ token: await this.jwtAdapter.generateHash({ id: login.id, email: login.email }) })
         } catch (error) {
             return serverError(error)
         }
