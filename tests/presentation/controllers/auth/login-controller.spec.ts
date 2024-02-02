@@ -3,7 +3,6 @@ import { throwError } from '@/tests/mocks'
 import { MissingParamError } from '@/presentation/errors'
 import { AuthenticationService, HashComparator, JwtHashGenerator } from '@/domain/usecases/auth'
 import { LoginController } from '@/presentation/controllers/auth/login-controller'
-import { HttpResponse } from '@/presentation/http/http-response'
 import { Validation } from '@/validation/protocols'
 import { User } from '@/domain/protocols/user'
 
@@ -75,35 +74,35 @@ const makeSut = (): SutTypes => {
 describe('loginController', () => {
     test('should return status 200 if login is successful', async () => {
         const { sut } = makeSut()
-        const response: HttpResponse = await sut.handle(loginRequest)
+        const response = await sut.handle(loginRequest)
         expect(response.statusCode).toEqual(200)
     })
 
     test('should return status 400 if validation fail', async () => {
         const { sut, validationSpy } = makeSut()
         jest.spyOn(validationSpy, 'validate').mockReturnValue(new MissingParamError('mock'))
-        const response: HttpResponse = await sut.handle(loginRequest)
+        const response = await sut.handle(loginRequest)
         expect(response.statusCode).toEqual(400)
     })
 
     test('should return status 401 if email is invalid', async () => {
         const { sut, userRepositorieSpy } = makeSut()
         jest.spyOn(userRepositorieSpy, 'login').mockResolvedValueOnce(undefined)
-        const response: HttpResponse = await sut.handle(loginRequest)
+        const response = await sut.handle(loginRequest)
         expect(response.statusCode).toEqual(401)
     })
 
     test('should return status 401 if password is invalid', async () => {
         const { sut, bcryptAdapterSpy } = makeSut()
         jest.spyOn(bcryptAdapterSpy, 'compare').mockResolvedValueOnce(false)
-        const response: HttpResponse = await sut.handle(loginRequest)
+        const response = await sut.handle(loginRequest)
         expect(response.statusCode).toEqual(401)
     })
 
     test('should return status 500 if thrown', async () => {
         const { sut, userRepositorieSpy } = makeSut()
         jest.spyOn(userRepositorieSpy, 'login').mockImplementationOnce(throwError)
-        const response: HttpResponse = await sut.handle(loginRequest)
+        const response = await sut.handle(loginRequest)
         expect(response.statusCode).toEqual(500)
     })
 })
