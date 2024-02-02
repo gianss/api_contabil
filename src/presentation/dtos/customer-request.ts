@@ -7,3 +7,7 @@ export interface AddCustomerRequest {
     avatar: string
     company_id: number
 }
+
+export interface UpdateCustomerRequest extends AddCustomerRequest {
+    id: number
+}

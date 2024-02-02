@@ -3,13 +3,15 @@ import { HashComparator, JwtHashGenerator, AuthenticationService, LoginHandler }
 import { unauthorized, badRequest, ok, serverError } from '@/presentation/helpers/http-helper'
 import { HttpResponse } from '@/presentation/http/http-response'
 import { LoginRequest } from '@/presentation/dtos/login-request'
+import { AddTokenService } from '@/domain/usecases/auth/add-token-service'
 
 export class LoginController implements LoginHandler {
     constructor(
         private readonly authenticationService: AuthenticationService,
         private readonly hashComparator: HashComparator,
         private readonly validation: Validation,
-        private readonly jwtAdapter: JwtHashGenerator
+        private readonly jwtAdapter: JwtHashGenerator,
+        private readonly addTokenService: AddTokenService
     ) { }
 
     async handle(request: LoginRequest): Promise<HttpResponse> {
@@ -26,7 +28,9 @@ export class LoginController implements LoginHandler {
             if (!isValid) {
                 return unauthorized()
             }
-            return ok({ token: await this.jwtAdapter.generateHash({ id: login.id, email: login.email }) })
+            const token = await this.jwtAdapter.generateHash({ id: login.id, email: login.email })
+            await this.addTokenService.addToken(login.id, token)
+            return ok({ token })
         } catch (error) {
             return serverError(error)
         }

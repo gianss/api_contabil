@@ -18,7 +18,7 @@ export class AuthMiddleware {
         }
         validations.push(new EmailValidation('email', new EmailValidatorAdapter()))
         const validation = new ValidationComposite(validations)
-        const loginController: LoginController = new LoginController(userRepository, bcryptAdapter, validation, jwtAdapter)
+        const loginController: LoginController = new LoginController(userRepository, bcryptAdapter, validation, jwtAdapter, userRepository)
         const response = await loginController.handle(req.body)
         res.status(response.statusCode).json(response.body)
     }

@@ -1,6 +1,6 @@
 import { AddCustomerService, VerifyEmailCustomerService } from '@/domain/usecases/customers'
 import { AddCustomerHandler } from '@/domain/usecases/customers/add-customer'
-import { AddCustomerRequest } from '@/presentation/dtos/add-customer-request'
+import { AddCustomerRequest } from '@/presentation/dtos/customer-request'
 import { EmailInUseError } from '@/presentation/errors'
 import { badRequest, ok, serverError } from '@/presentation/helpers/http-helper'
 import { HttpResponse } from '@/presentation/http/http-response'
