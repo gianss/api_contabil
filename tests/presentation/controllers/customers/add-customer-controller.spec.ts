@@ -75,6 +75,13 @@ describe('addCustomerController', () => {
         expect(response.body.data).toEqual(customerResponse)
     })
 
+    test('should return status 400 if email in use', async () => {
+        const { sut, verifyEmailCustomerSpy } = makeSut()
+        jest.spyOn(verifyEmailCustomerSpy, 'verify').mockResolvedValueOnce(true)
+        const response = await sut.handle(customerRequest)
+        expect(response.statusCode).toEqual(400)
+    })
+
     test('should return status 400 if validation fail', async () => {
         const { sut, validationSpy } = makeSut()
         jest.spyOn(validationSpy, 'validate').mockReturnValue(new MissingParamError('mock'))
