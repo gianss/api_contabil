@@ -17,7 +17,9 @@ export class AddCustomerController implements AddCustomerHandler {
             if (error) {
                 return badRequest(error)
             }
-            return ok('ok')
+            const { name, email, phone, type, status, company_id, avatar } = request
+            const customerResponse = await this.addCustomerRepositorie.add({ name, email, phone, type, status, company_id, avatar })
+            return ok(customerResponse)
         } catch (error) {
             return serverError(error)
         }
