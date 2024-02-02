@@ -31,7 +31,7 @@ interface SutTypes {
 }
 
 class CustomerRepositorieSpy implements AddCustomerService {
-    async add(email: string): Promise<Customer | undefined> {
+    async add(request: AddCustomerRequest): Promise<Customer | undefined> {
         return customerResponse
     }
 }
