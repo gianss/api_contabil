@@ -1,4 +1,3 @@
-import { UserRepositorie } from '@/infra/repositories/user-repositorie'
 import { JwtAdapter } from '@/infra/hasher/jwt-adapter'
 import { Validation } from '@/validation/protocols'
 import { EmailValidation, RequiredFieldValidation, ValidationComposite } from '@/validation/validators'
@@ -6,10 +5,11 @@ import { EmailValidatorAdapter } from '@/validation/validators/email-validator-a
 import { Request, Response } from 'express'
 import { LoginController } from '../../presentation/controllers/auth/login-controller'
 import { BcryptAdapter } from '@/infra/cryptography/bcrypter-adapter'
+import { UserRepository } from '@/infra/repositorys/user-repository'
 
 export class AuthMiddleware {
     async login(req: Request, res: Response): Promise<void> {
-        const userRepositorie = new UserRepositorie()
+        const userRepository = new UserRepository()
         const bcryptAdapter = new BcryptAdapter(10)
         const jwtAdapter = new JwtAdapter()
         const validations: Validation[] = []
@@ -18,7 +18,7 @@ export class AuthMiddleware {
         }
         validations.push(new EmailValidation('email', new EmailValidatorAdapter()))
         const validation = new ValidationComposite(validations)
-        const loginController: LoginController = new LoginController(userRepositorie, bcryptAdapter, validation, jwtAdapter)
+        const loginController: LoginController = new LoginController(userRepository, bcryptAdapter, validation, jwtAdapter)
         const response = await loginController.handle(req.body)
         res.status(response.statusCode).json(response.body)
     }

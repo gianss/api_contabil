@@ -1,11 +1,11 @@
 import { Customer } from '@/domain/protocols/customer'
-import { AddCustomerService } from '@/domain/usecases/customers/customer-service'
 import { AddCustomerRequest } from '@/presentation/dtos/add-customer-request'
 import { Validation } from '@/validation/protocols'
 import { faker } from '@faker-js/faker'
 import { AddCustomerController } from '@/presentation/controllers/customers/add-customer-controller'
 import { MissingParamError } from '@/presentation/errors'
 import { throwError } from '@/tests/mocks'
+import { AddCustomerService, VerifyEmailCustomerService } from '@/domain/usecases/customers'
 
 const customerRequest: AddCustomerRequest = {
     phone: faker.phone.number(),
@@ -26,11 +26,12 @@ const customerResponse: Customer = {
 
 interface SutTypes {
     sut: AddCustomerController
-    customerRepositorieSpy: CustomerRepositorieSpy
+    addcustomerRepositorySpy: AddCustomerRepositorySpy
     validationSpy: ValidationSpy
+    verifyEmailCustomerSpy: VerifyEmailCustomerSpy
 }
 
-class CustomerRepositorieSpy implements AddCustomerService {
+class AddCustomerRepositorySpy implements AddCustomerService {
     async add(request: AddCustomerRequest): Promise<Customer | undefined> {
         return customerResponse
     }
@@ -42,13 +43,21 @@ class ValidationSpy implements Validation {
     }
 }
 
+class VerifyEmailCustomerSpy implements VerifyEmailCustomerService {
+    async verify(email: string): Promise<boolean> {
+        return false
+    }
+}
+
 const makeSut = (): SutTypes => {
-    const customerRepositorieSpy = new CustomerRepositorieSpy()
+    const addcustomerRepositorySpy = new AddCustomerRepositorySpy()
     const validationSpy = new ValidationSpy()
+    const verifyEmailCustomerSpy = new VerifyEmailCustomerSpy()
     return {
-        sut: new AddCustomerController(customerRepositorieSpy, validationSpy),
-        customerRepositorieSpy,
-        validationSpy
+        sut: new AddCustomerController(addcustomerRepositorySpy, validationSpy, verifyEmailCustomerSpy),
+        addcustomerRepositorySpy,
+        validationSpy,
+        verifyEmailCustomerSpy
     }
 }
 
@@ -57,6 +66,13 @@ describe('addCustomerController', () => {
         const { sut } = makeSut()
         const response = await sut.handle(customerRequest)
         expect(response.statusCode).toEqual(200)
+    })
+
+    test('should return a customer if the request is successful', async () => {
+        const { sut } = makeSut()
+        const response = await sut.handle(customerRequest)
+        expect(response.body.data).toBeDefined()
+        expect(response.body.data).toEqual(customerResponse)
     })
 
     test('should return status 400 if validation fail', async () => {
