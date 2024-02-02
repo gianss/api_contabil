@@ -6,6 +6,7 @@ export async function up(knex: Knex): Promise<void> {
         table.integer('customer_id').unsigned().notNullable()
         table.foreign('customer_id').references('id').inTable('customers')
         table.decimal('amount').notNullable()
+        table.text('observation').nullable()
         table.date('due_date').notNullable()
         table.integer('frequency').notNullable()
         table.enum('status', ['pending', 'received', 'late']).defaultTo('pending')

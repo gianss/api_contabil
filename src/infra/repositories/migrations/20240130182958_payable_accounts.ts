@@ -5,6 +5,7 @@ export async function up(knex: Knex): Promise<void> {
         table.increments('id').primary()
         table.integer('supplier_id').unsigned().notNullable()
         table.foreign('supplier_id').references('id').inTable('suppliers')
+        table.text('observation').nullable()
         table.decimal('amount').notNullable()
         table.integer('frequency').notNullable()
         table.date('due_date').notNullable()

@@ -6,6 +6,7 @@ export async function up(knex: Knex): Promise<void> {
         table.integer('customer_id').unsigned().notNullable()
         table.foreign('customer_id').references('id').inTable('customers')
         table.dateTime('appointment_datetime').notNullable()
+        table.text('observation').nullable()
         table.enum('status', ['scheduled', 'completed', 'canceled']).defaultTo('scheduled')
         table.timestamps(true, true)
     })
