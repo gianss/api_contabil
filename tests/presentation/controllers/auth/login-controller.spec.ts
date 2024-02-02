@@ -15,6 +15,7 @@ const loginRequest = {
 const loginResponse: User = {
     ...loginRequest,
     id: 1,
+    company_id: 1,
     phone: 'any_phone',
     type: 'barber',
     name: 'any_name',
