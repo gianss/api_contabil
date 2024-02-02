@@ -5,6 +5,7 @@ import { AuthenticationService, HashComparator, JwtHashGenerator } from '@/domai
 import { LoginController } from '@/presentation/controllers/auth/login-controller'
 import { Validation } from '@/validation/protocols'
 import { User } from '@/domain/protocols/user'
+import { AddTokenService } from '@/domain/usecases/auth/add-token-service'
 
 const loginRequest = {
     email: faker.internet.email(),
@@ -33,9 +34,13 @@ interface SutTypes {
     jwtAdapterSpy: JwtAdapterSpy
 }
 
-class UserRepositorySpy implements AuthenticationService {
+class UserRepositorySpy implements AuthenticationService, AddTokenService {
     async login(email: string): Promise<User | undefined> {
         return loginResponse
+    }
+
+    async addToken(id: number, email: string): Promise<void> {
+
     }
 }
 
@@ -63,7 +68,7 @@ const makeSut = (): SutTypes => {
     const validationSpy = new ValidationSpy()
     const jwtAdapterSpy = new JwtAdapterSpy()
     return {
-        sut: new LoginController(userRepositorySpy, bcryptAdapterSpy, validationSpy, jwtAdapterSpy),
+        sut: new LoginController(userRepositorySpy, bcryptAdapterSpy, validationSpy, jwtAdapterSpy, userRepositorySpy),
         userRepositorySpy,
         bcryptAdapterSpy,
         validationSpy,
@@ -106,9 +111,16 @@ describe('loginController', () => {
         expect(response.statusCode).toEqual(401)
     })
 
-    test('should return status 500 if thrown', async () => {
+    test('should return status 500 if userRepository thrown', async () => {
         const { sut, userRepositorySpy } = makeSut()
         jest.spyOn(userRepositorySpy, 'login').mockImplementationOnce(throwError)
+        const response = await sut.handle(loginRequest)
+        expect(response.statusCode).toEqual(500)
+    })
+
+    test('should return status 500 if addTokenRepository thrown', async () => {
+        const { sut, userRepositorySpy } = makeSut()
+        jest.spyOn(userRepositorySpy, 'addToken').mockImplementationOnce(throwError)
         const response = await sut.handle(loginRequest)
         expect(response.statusCode).toEqual(500)
     })
