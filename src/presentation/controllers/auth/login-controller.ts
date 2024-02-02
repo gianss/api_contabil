@@ -6,8 +6,8 @@ import { LoginRequest } from '@/presentation/dtos/login-request'
 
 export class LoginController implements LoginHandler {
     constructor(
-        readonly authenticationService: AuthenticationService,
-        readonly hashComparator: HashComparator,
+        private readonly authenticationService: AuthenticationService,
+        private readonly hashComparator: HashComparator,
         private readonly validation: Validation,
         private readonly jwtAdapter: JwtHashGenerator
     ) { }
