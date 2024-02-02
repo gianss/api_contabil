@@ -5,7 +5,7 @@ import { EmailValidatorAdapter } from '@/validation/validators/email-validator-a
 import { Request, Response } from 'express'
 import { LoginController } from '../../presentation/controllers/auth/login-controller'
 import { BcryptAdapter } from '@/infra/cryptography/bcrypter-adapter'
-import { UserRepository } from '@/infra/repositorys/user-repository'
+import { UserRepository } from '@/infra/repositories/user-repository'
 
 export class AuthMiddleware {
     async login(req: Request, res: Response): Promise<void> {
