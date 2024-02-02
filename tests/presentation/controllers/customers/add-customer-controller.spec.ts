@@ -4,11 +4,7 @@ import { AddCustomerRequest } from '@/presentation/dtos/add-customer-request'
 import { Validation } from '@/validation/protocols'
 import { faker } from '@faker-js/faker'
 import { AddCustomerController } from '@/presentation/controllers/customers/add-customer-controller'
-
-interface SutTypes {
-    sut: AddCustomerController
-    customerRepositorieSpy: CustomerRepositorieSpy
-}
+import { MissingParamError } from '@/presentation/errors'
 
 const customerRequest: AddCustomerRequest = {
     phone: faker.phone.number(),
@@ -25,6 +21,12 @@ const customerResponse: Customer = {
     id: faker.number.int(),
     created_at: faker.date.anytime(),
     updated_at: faker.date.anytime()
+}
+
+interface SutTypes {
+    sut: AddCustomerController
+    customerRepositorieSpy: CustomerRepositorieSpy
+    validationSpy: ValidationSpy
 }
 
 class CustomerRepositorieSpy implements AddCustomerService {
@@ -44,7 +46,8 @@ const makeSut = (): SutTypes => {
     const validationSpy = new ValidationSpy()
     return {
         sut: new AddCustomerController(customerRepositorieSpy, validationSpy),
-        customerRepositorieSpy
+        customerRepositorieSpy,
+        validationSpy
     }
 }
 
@@ -53,5 +56,12 @@ describe('addCustomerController', () => {
         const { sut } = makeSut()
         const response = await sut.handle(customerRequest)
         expect(response.statusCode).toEqual(200)
+    })
+
+    test('should return status 400 if validation fail', async () => {
+        const { sut, validationSpy } = makeSut()
+        jest.spyOn(validationSpy, 'validate').mockReturnValue(new MissingParamError('mock'))
+        const response = await sut.handle(customerRequest)
+        expect(response.statusCode).toEqual(400)
     })
 })
