@@ -5,6 +5,7 @@ import { Validation } from '@/validation/protocols'
 import { faker } from '@faker-js/faker'
 import { AddCustomerController } from '@/presentation/controllers/customers/add-customer-controller'
 import { MissingParamError } from '@/presentation/errors'
+import { throwError } from '@/tests/mocks'
 
 const customerRequest: AddCustomerRequest = {
     phone: faker.phone.number(),
@@ -63,5 +64,12 @@ describe('addCustomerController', () => {
         jest.spyOn(validationSpy, 'validate').mockReturnValue(new MissingParamError('mock'))
         const response = await sut.handle(customerRequest)
         expect(response.statusCode).toEqual(400)
+    })
+
+    test('should return status 500 if thrown', async () => {
+        const { sut, validationSpy } = makeSut()
+        jest.spyOn(validationSpy, 'validate').mockImplementationOnce(throwError)
+        const response = await sut.handle(customerRequest)
+        expect(response.statusCode).toEqual(500)
     })
 })
