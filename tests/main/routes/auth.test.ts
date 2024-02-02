@@ -9,10 +9,8 @@ describe('Auth Middleware Integration Test', () => {
                 email: 'gian_ss@live.com',
                 password: '123'
             })
-        console.log(response.body)
         expect(response.status).toBe(200)
     })
-
     test('should return status 400 for invalid fields', async () => {
         const response = await request(server)
             .post('/auth/login')
@@ -22,7 +20,6 @@ describe('Auth Middleware Integration Test', () => {
             })
         expect(response.status).toBe(400)
     })
-
     test('should return status 401 for unauthorized login', async () => {
         const response = await request(server)
             .post('/auth/login')
