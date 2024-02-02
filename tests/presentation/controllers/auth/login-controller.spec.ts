@@ -78,6 +78,13 @@ describe('loginController', () => {
         expect(response.statusCode).toEqual(200)
     })
 
+    test('should return a token if login  is successful', async () => {
+        const { sut } = makeSut()
+        const response = await sut.handle(loginRequest)
+        expect(response.body.token).toBeDefined()
+        expect(response.body.token).not.toEqual('')
+    })
+
     test('should return status 400 if validation fail', async () => {
         const { sut, validationSpy } = makeSut()
         jest.spyOn(validationSpy, 'validate').mockReturnValue(new MissingParamError('mock'))
