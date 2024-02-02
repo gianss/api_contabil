@@ -90,8 +90,8 @@ describe('addCustomerController', () => {
     })
 
     test('should return status 500 if thrown', async () => {
-        const { sut, validationSpy } = makeSut()
-        jest.spyOn(validationSpy, 'validate').mockImplementationOnce(throwError)
+        const { sut, verifyEmailCustomerSpy } = makeSut()
+        jest.spyOn(verifyEmailCustomerSpy, 'verify').mockImplementationOnce(throwError)
         const response = await sut.handle(customerRequest)
         expect(response.statusCode).toEqual(500)
     })
