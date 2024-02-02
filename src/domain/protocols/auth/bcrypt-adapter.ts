@@ -1,8 +1,8 @@
 
-export interface BcryptCompareAdapterInterface {
+export interface CompareHashInterface {
     compare(password: string, hash: string): Promise<boolean>
 }
 
-export interface BcryptHashAdapterInterface {
+export interface HashInterface {
     hash(password: string): Promise<string>
 }
