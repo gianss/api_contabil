@@ -1,15 +1,15 @@
 import { Validation } from '@/validation/protocols'
-import { CompareHashInterface, JwtAdapterInterface, AuthenticationService, Login } from '@/domain/protocols/auth'
+import { HashComparator, JwtHashGenerator, AuthenticationService, LoginHandler } from '@/domain/usecases/auth'
 import { unauthorized, badRequest, ok, serverError } from '@/presentation/helpers/http-helper'
 import { HttpResponse } from '@/presentation/http/http-response'
 import { LoginRequest } from '@/presentation/dtos/login-request'
 
-export class LoginController implements Login {
+export class LoginController implements LoginHandler {
     constructor(
         readonly authenticationService: AuthenticationService,
-        readonly bcryptAdapter: CompareHashInterface,
+        readonly hashComparator: HashComparator,
         private readonly validation: Validation,
-        private readonly jwtAdapter: JwtAdapterInterface
+        private readonly jwtAdapter: JwtHashGenerator
     ) { }
 
     async handle(request: LoginRequest): Promise<HttpResponse> {
@@ -22,7 +22,7 @@ export class LoginController implements Login {
             if (!login) {
                 return unauthorized()
             }
-            const isValid = await this.bcryptAdapter.compare(request.password, login.password)
+            const isValid = await this.hashComparator.compare(request.password, login.password)
             if (!isValid) {
                 return unauthorized()
             }

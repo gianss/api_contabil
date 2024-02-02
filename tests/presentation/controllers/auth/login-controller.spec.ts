@@ -1,11 +1,11 @@
 import { faker } from '@faker-js/faker'
 import { throwError } from '@/tests/mocks'
 import { MissingParamError } from '@/presentation/errors'
-import { AuthenticationService, CompareHashInterface, JwtAdapterInterface } from '@/domain/protocols/auth'
-import { User } from '@/presentation/interfaces/user'
+import { AuthenticationService, HashComparator, JwtHashGenerator } from '@/domain/usecases/auth'
 import { LoginController } from '@/presentation/controllers/auth/login-controller'
 import { HttpResponse } from '@/presentation/http/http-response'
 import { Validation } from '@/validation/protocols'
+import { User } from '@/domain/protocols/user'
 
 const loginRequest = {
     email: faker.internet.email(),
@@ -45,13 +45,13 @@ class ValidationSpy implements Validation {
     }
 }
 
-class JwtAdapterSpy implements JwtAdapterInterface {
+class JwtAdapterSpy implements JwtHashGenerator {
     async generateHash(input: any): Promise<string> {
         return 'any_hash'
     }
 }
 
-class BcryptAdapterSpy implements CompareHashInterface {
+class BcryptAdapterSpy implements HashComparator {
     async compare(password: string, hash: string): Promise<boolean> {
         return true
     }

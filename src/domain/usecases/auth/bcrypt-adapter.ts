@@ -1,8 +1,8 @@
 
-export interface CompareHashInterface {
+export interface HashComparator {
     compare(password: string, hash: string): Promise<boolean>
 }
 
-export interface HashInterface {
+export interface HashGenerator {
     hash(password: string): Promise<string>
 }
