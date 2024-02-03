@@ -1,6 +1,10 @@
 import request from 'supertest'
 import server from '@/main/index'
 
+afterAll((done) => {
+    server.close(done) // Feche o servidor após todos os testes
+})
+
 describe('Auth Middleware Integration Test', () => {
     test('should return a successful response when login is valid', async () => {
         const response = await request(server)

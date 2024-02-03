@@ -3,12 +3,15 @@ import server from '@/main/index'
 import { faker } from '@faker-js/faker'
 
 let authToken: string
-
 beforeAll(async () => {
     const loginResponse = await request(server)
         .post('/auth/login')
         .send({ email: 'gian_ss@live.com', password: '123' })
     authToken = loginResponse.body.token
+})
+
+afterAll((done) => {
+    server.close(done) // Feche o servidor após todos os testes
 })
 
 describe('Customer Endpoint Tests', () => {
