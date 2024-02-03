@@ -27,6 +27,7 @@ export class AddCustomerController implements AddCustomerHandler {
             const customer = await this.addCustomerRepository.add({ name, email, phone, type, status, company_id, avatar })
             return ok({ data: customer })
         } catch (error) {
+            console.log(error)
             return serverError(error)
         }
     }
