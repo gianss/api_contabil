@@ -17,7 +17,7 @@ const loginResponse: User = {
     id: 1,
     company_id: 1,
     phone: 'any_phone',
-    type: 'barber',
+    type: 'administrator',
     name: 'any_name',
     avatar: 'avatar',
     status: 'active',
