@@ -1,13 +1,13 @@
 import { Customer } from '@/domain/protocols/customer'
-import { AddCustomerRequest } from '@/presentation/dtos/customer-request'
 import { Validation } from '@/validation/protocols'
 import { faker } from '@faker-js/faker'
 import { AddCustomerController } from '@/presentation/controllers/customers/add-customer-controller'
 import { MissingParamError } from '@/presentation/errors'
 import { throwError } from '@/tests/mocks'
 import { AddCustomerService, VerifyEmailCustomerService } from '@/domain/usecases/customers'
+import { CustomerRequest } from '@/presentation/dtos/customer-request'
 
-const customerRequest: AddCustomerRequest = {
+const customerRequest: CustomerRequest = {
     phone: faker.phone.number(),
     email: faker.internet.email(),
     name: faker.person.fullName(),
@@ -32,7 +32,7 @@ interface SutTypes {
 }
 
 class AddCustomerRepositorySpy implements AddCustomerService {
-    async add(request: AddCustomerRequest): Promise<Customer | undefined> {
+    async add(request: CustomerRequest): Promise<Customer | undefined> {
         return customerResponse
     }
 }
