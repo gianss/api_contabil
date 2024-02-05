@@ -1,6 +1,6 @@
 import { Customer } from '@/domain/protocols/customer'
-import { UpdateCustomerRequest } from '@/presentation/dtos/customer-request'
+import { CustomerRequest } from '@/presentation/dtos/customer-request'
 
 export interface UpdateCustomerService {
-    add(request: UpdateCustomerRequest): Promise<Customer | undefined>
+    update(request: CustomerRequest, id: number): Promise<Customer | undefined>
 }

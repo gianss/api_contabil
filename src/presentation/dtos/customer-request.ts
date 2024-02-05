@@ -1,4 +1,4 @@
-export interface AddCustomerRequest {
+export interface CustomerRequest {
     name: string
     phone: string
     email: string
@@ -6,8 +6,4 @@ export interface AddCustomerRequest {
     type: string
     avatar: string
     company_id: number
-}
-
-export interface UpdateCustomerRequest extends AddCustomerRequest {
-    id: number
 }

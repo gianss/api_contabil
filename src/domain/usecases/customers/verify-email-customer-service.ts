@@ -1,4 +1,4 @@
 
 export interface VerifyEmailCustomerService {
-    verify(email: string): Promise<boolean>
+    verify(email: string, id?: number): Promise<boolean>
 }
