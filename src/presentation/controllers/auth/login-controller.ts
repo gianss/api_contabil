@@ -1,11 +1,12 @@
 import { Validation } from '@/validation/protocols'
-import { HashComparator, JwtHashGenerator, AuthenticationService, LoginHandler } from '@/domain/usecases/auth'
+import { HashComparator, JwtHashGenerator, AuthenticationService } from '@/domain/usecases/auth'
 import { unauthorized, badRequest, ok, serverError } from '@/presentation/helpers/http-helper'
 import { HttpResponse } from '@/presentation/http/http-response'
 import { LoginRequest } from '@/presentation/dtos/login-request'
 import { AddTokenService } from '@/domain/usecases/auth/add-token-service'
+import { ControllerHandler } from '@/domain/usecases/controller-handle'
 
-export class LoginController implements LoginHandler {
+export class LoginController implements ControllerHandler<LoginRequest> {
     constructor(
         private readonly authenticationService: AuthenticationService,
         private readonly hashComparator: HashComparator,

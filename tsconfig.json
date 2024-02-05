@@ -24,5 +24,8 @@
     "src",
     "tests"
   ],
-  "exclude": []
+  "exclude": [],
+  "files": [
+    "src/main/config/custom-modules.d.ts"
+  ]
 }

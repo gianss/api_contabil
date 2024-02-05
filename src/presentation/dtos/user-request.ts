@@ -1,4 +1,4 @@
-export interface AddUser {
+export interface UserRequest {
     name: string
     email: string
     phone: string
@@ -7,8 +7,4 @@ export interface AddUser {
     avatar: string
     status: string
     type: string
-}
-
-export interface UpdateUser extends AddUser {
-    id: number
 }
