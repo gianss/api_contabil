@@ -2,7 +2,6 @@
   "compilerOptions": {
     "outDir": "dist",
     "module": "commonjs",
-    "declaration": true,
     "target": "es2019",
     "esModuleInterop": true,
     "sourceMap": true,
@@ -10,7 +9,7 @@
       "src",
       "tests"
     ],
-    "baseUrl": ".",
+    "baseUrl": "./",
     "paths": {
       "@/tests/*": [
         "tests/*"

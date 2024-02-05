@@ -4,9 +4,9 @@
   "description": "",
   "main": "src/index.ts",
   "scripts": {
-    "start": "node dist/src/main/index.js",
+    "start": "node -r tsconfig-paths/register dist/main/index.js",
     "dev": "nodemon",
-    "build": "tsc --project tsconfig.prod.json",
+    "build": "tsc --build tsconfig.prod.json && tscpaths -p tsconfig.prod.json -s ./src -o ./dist/",
     "test": "jest --passWithNoTests --runInBand --no-cache",
     "test:unit": "npm test -- --watch -c jest-unit-config.js",
     "test:integration": "npm test -- --watch -c jest-integration-config.js",
@@ -65,6 +65,7 @@
     "nodemon": "^3.0.3",
     "swagger-ui-express": "^4.3.0",
     "ts-node": "^10.4.0",
+    "tscpaths": "^0.0.9",
     "validator": "^13.6.0"
   }
 }
