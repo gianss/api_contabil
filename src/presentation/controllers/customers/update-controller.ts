@@ -9,9 +9,9 @@ import { Validation } from '@/validation/protocols'
 
 export class UpdateCustomerController implements UpdateControllerHandler<CustomerRequest> {
     constructor(
-        private readonly updateCustomerService: UpdateService<CustomerRequest, Customer>,
+        private readonly updateCustomerRepository: UpdateService<CustomerRequest, Customer>,
         private readonly validation: Validation,
-        private readonly verifyEmailCustomerService: VerifyEmailUsedService
+        private readonly verifyEmailCustomerRepository: VerifyEmailUsedService
     ) { }
 
     async handle(request: CustomerRequest, id: number): Promise<HttpResponse> {
@@ -21,11 +21,11 @@ export class UpdateCustomerController implements UpdateControllerHandler<Custome
                 return badRequest(error)
             }
             const { name, email, phone, type, status, company_id, avatar } = request
-            const emailIsUsed = await this.verifyEmailCustomerService.verifyEmail(email, id)
+            const emailIsUsed = await this.verifyEmailCustomerRepository.verifyEmail(email, id)
             if (emailIsUsed) {
                 return badRequest(new EmailInUseError())
             }
-            const customer = await this.updateCustomerService.update({ name, email, phone, type, status, company_id, avatar }, id)
+            const customer = await this.updateCustomerRepository.update({ name, email, phone, type, status, company_id, avatar }, id)
             return ok({ data: customer })
         } catch (error) {
             return serverError(error)

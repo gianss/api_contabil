@@ -1,2 +1,4 @@
-export * from './add-customer-controller'
-export * from './update-customer-controller'
+export * from './add-controller'
+export * from './update-controller'
+export * from './list-controller'
+export * from './delete-controller'

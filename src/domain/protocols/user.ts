@@ -9,6 +9,6 @@ export interface User {
     avatar: string
     status: string
     type: string
-    created_at: string
-    updated_at: string
+    created_at: string | number | Date
+    updated_at: string | number | Date
 }
