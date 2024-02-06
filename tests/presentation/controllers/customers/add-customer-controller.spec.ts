@@ -1,28 +1,14 @@
 import { Customer } from '@/domain/protocols/customer'
 import { Validation } from '@/validation/protocols'
-import { faker } from '@faker-js/faker'
-import { AddCustomerController } from '@/presentation/controllers/customers/add-customer-controller'
+import { AddCustomerController } from '@/presentation/controllers/customers/add-controller'
 import { MissingParamError } from '@/presentation/errors'
 import { throwError } from '@/tests/mocks'
 import { CustomerRequest } from '@/presentation/dtos/customer-request'
 import { AddService, VerifyEmailUsedService } from '@/domain/usecases/repositories'
+import { customerRequest, customerResponse } from '@/tests/mocks/mock-customer'
 
-const customerRequest: CustomerRequest = {
-    phone: faker.phone.number(),
-    email: faker.internet.email(),
-    name: faker.person.fullName(),
-    status: 'active',
-    type: 'scheduling',
-    avatar: '',
-    company_id: faker.number.int()
-}
-
-const customerResponse: Customer = {
-    ...customerRequest,
-    id: faker.number.int(),
-    created_at: faker.date.anytime(),
-    updated_at: faker.date.anytime()
-}
+const request = customerRequest()
+const response = customerResponse()
 
 interface SutTypes {
     sut: AddCustomerController
@@ -33,7 +19,7 @@ interface SutTypes {
 
 class AddCustomerRepositorySpy implements AddService<CustomerRequest, Customer> {
     async add(request: CustomerRequest): Promise<Customer | undefined> {
-        return customerResponse
+        return response
     }
 }
 
@@ -61,38 +47,38 @@ const makeSut = (): SutTypes => {
     }
 }
 
-describe('addCustomerController', () => {
-    test('should return status 200 if add is successful', async () => {
+describe('Add Customer Controller', () => {
+    test('Should return status 200 if registration is successful', async () => {
         const { sut } = makeSut()
-        const response = await sut.handle(customerRequest)
-        expect(response.statusCode).toEqual(200)
+        const data = await sut.handle(request)
+        expect(data.statusCode).toEqual(200)
     })
 
-    test('should return a customer if the request is successful', async () => {
+    test('Should return a customer if the request is successful', async () => {
         const { sut } = makeSut()
-        const response = await sut.handle(customerRequest)
-        expect(response.body.data).toBeDefined()
-        expect(response.body.data).toEqual(customerResponse)
+        const data = await sut.handle(request)
+        expect(data.body.data).toBeDefined()
+        expect(data.body.data).toEqual(response)
     })
 
-    test('should return status 400 if email in use', async () => {
+    test('Should return status 400 if the email is already in use', async () => {
         const { sut, verifyEmailCustomerSpy } = makeSut()
         jest.spyOn(verifyEmailCustomerSpy, 'verifyEmail').mockResolvedValueOnce(true)
-        const response = await sut.handle(customerRequest)
-        expect(response.statusCode).toEqual(400)
+        const data = await sut.handle(request)
+        expect(data.statusCode).toEqual(400)
     })
 
-    test('should return status 400 if validation fail', async () => {
+    test('Should return status 400 if validation fails', async () => {
         const { sut, validationSpy } = makeSut()
         jest.spyOn(validationSpy, 'validate').mockReturnValue(new MissingParamError('mock'))
-        const response = await sut.handle(customerRequest)
-        expect(response.statusCode).toEqual(400)
+        const data = await sut.handle(request)
+        expect(data.statusCode).toEqual(400)
     })
 
-    test('should return status 500 if thrown', async () => {
+    test('Should return status 500 if an unexpected error occurs', async () => {
         const { sut, verifyEmailCustomerSpy } = makeSut()
         jest.spyOn(verifyEmailCustomerSpy, 'verifyEmail').mockImplementationOnce(throwError)
-        const response = await sut.handle(customerRequest)
-        expect(response.statusCode).toEqual(500)
+        const data = await sut.handle(request)
+        expect(data.statusCode).toEqual(500)
     })
 })

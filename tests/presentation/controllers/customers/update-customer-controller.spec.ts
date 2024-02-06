@@ -5,27 +5,14 @@ import { UpdateCustomerController } from '@/presentation/controllers/customers/'
 import { CustomerRequest } from '@/presentation/dtos/customer-request'
 import { MissingParamError } from '@/presentation/errors'
 import { throwError } from '@/tests/mocks'
+import { customerRequest, customerResponse } from '@/tests/mocks/mock-customer'
 import { Validation } from '@/validation/protocols'
 import { faker } from '@faker-js/faker'
 
-const customerRequest: CustomerRequest = {
-    phone: faker.phone.number(),
-    email: faker.internet.email(),
-    name: faker.person.fullName(),
-    status: 'active',
-    type: 'scheduling',
-    avatar: '',
-    company_id: faker.number.int()
-}
-
-const customerResponse: Customer = {
-    ...customerRequest,
-    id: faker.number.int(),
-    created_at: faker.date.anytime(),
-    updated_at: faker.date.anytime()
-}
-
 const id = faker.number.int()
+
+const request = customerRequest()
+const response = customerResponse()
 
 class ValidationSpy implements Validation {
     validate(input: any): Error {
@@ -48,7 +35,7 @@ interface SutTypes {
 
 class UpdateCustomerRepositorySpy implements UpdateService<CustomerRequest, Customer> {
     async update(request: CustomerRequest, id: number): Promise<Customer | undefined> {
-        return customerResponse
+        return response
     }
 }
 
@@ -64,39 +51,39 @@ const makeSut = (): SutTypes => {
     }
 }
 
-describe('updateCustomerController', () => {
-    test('should return status 200 if update is successful', async () => {
+describe('Update Customer Controller', () => {
+    test('Should return status 200 if update is successful', async () => {
         const { sut } = makeSut()
-        const response = await sut.handle(customerRequest, id)
-        expect(response.statusCode).toEqual(200)
+        const data = await sut.handle(request, id)
+        expect(data.statusCode).toEqual(200)
     })
 
-    test('should return a customer if the request is successful', async () => {
+    test('Should return a customer if the request is successful', async () => {
         const { sut } = makeSut()
-        const response = await sut.handle(customerRequest, id)
-        expect(response.body.data).toBeDefined()
-        expect(response.body.data).toEqual(customerResponse)
+        const data = await sut.handle(request, id)
+        expect(data.body.data).toBeDefined()
+        expect(data.body.data).toEqual(response)
     })
 
-    test('should return status 400 if validation fail', async () => {
+    test('Should return status 400 if validation fails', async () => {
         const { sut, validationSpy } = makeSut()
         jest.spyOn(validationSpy, 'validate').mockReturnValue(new MissingParamError('mock'))
-        const response = await sut.handle(customerRequest, id)
-        expect(response.statusCode).toEqual(400)
+        const data = await sut.handle(request, id)
+        expect(data.statusCode).toEqual(400)
     })
 
-    test('should return status 400 if email in use (verifyEmailCustomerSpy = true)', async () => {
+    test('Should return status 400 if email is already in use', async () => {
         const { sut, verifyEmailCustomerSpy } = makeSut()
         jest.spyOn(verifyEmailCustomerSpy, 'verifyEmail').mockResolvedValueOnce(true)
-        customerRequest.email = 'any_email.com.br'
-        const response = await sut.handle(customerRequest, id)
-        expect(response.statusCode).toEqual(400)
+        request.email = 'any_email.com.br'
+        const data = await sut.handle(request, id)
+        expect(data.statusCode).toEqual(400)
     })
 
-    test('should return status 500 if thrown', async () => {
+    test('Should return status 500 if an error occurs', async () => {
         const { sut, verifyEmailCustomerSpy } = makeSut()
         jest.spyOn(verifyEmailCustomerSpy, 'verifyEmail').mockImplementationOnce(throwError)
-        const response = await sut.handle(customerRequest, id)
-        expect(response.statusCode).toEqual(500)
+        const data = await sut.handle(request, id)
+        expect(data.statusCode).toEqual(500)
     })
 })
