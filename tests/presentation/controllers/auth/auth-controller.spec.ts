@@ -1,9 +1,9 @@
 import { faker } from '@faker-js/faker'
 import { JwtHashDecoded } from '@/domain/usecases/auth'
-import { GetUserTokenService } from '@/domain/usecases/users/get-user-token'
 import { AuthController } from '@/presentation/controllers/auth/auth-controller'
 import { throwError } from '@/tests/mocks'
 import { User } from '@/domain/protocols/user'
+import { GetByTokenService } from '@/domain/usecases/repositories'
 
 const login = { id: 1, email: 'gian_ss@live.com' }
 
@@ -28,8 +28,8 @@ const loginResponse: User = {
     updated_at: 'any_value'
 }
 
-class UserRepositorySpy implements GetUserTokenService {
-    async getUserToken(email: string): Promise<User | undefined> {
+class UserRepositorySpy implements GetByTokenService<User> {
+    async getByToken(email: string): Promise<User | undefined> {
         return loginResponse
     }
 }
@@ -66,7 +66,7 @@ describe('AuthController Authorization', () => {
 
     test('should return false if getUserTokenService returns undefined', async () => {
         const { sut, userRepositorySpy } = makeSut()
-        jest.spyOn(userRepositorySpy, 'getUserToken').mockRejectedValueOnce(undefined)
+        jest.spyOn(userRepositorySpy, 'getByToken').mockRejectedValueOnce(undefined)
         const hasPermission = await sut.authorize('any_token', ['administrator'])
         expect(hasPermission.next).toEqual(false)
     })

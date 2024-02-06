@@ -1,11 +1,11 @@
 import { faker } from '@faker-js/faker'
 import { throwError } from '@/tests/mocks'
 import { MissingParamError } from '@/presentation/errors'
-import { AuthenticationService, HashComparator, JwtHashGenerator } from '@/domain/usecases/auth'
+import { HashComparator, JwtHashGenerator } from '@/domain/usecases/auth'
 import { LoginController } from '@/presentation/controllers/auth/login-controller'
 import { Validation } from '@/validation/protocols'
 import { User } from '@/domain/protocols/user'
-import { AddTokenService } from '@/domain/usecases/auth/add-token-service'
+import { AddTokenService, AuthenticationService } from '@/domain/usecases/repositories'
 
 const loginRequest = {
     email: faker.internet.email(),

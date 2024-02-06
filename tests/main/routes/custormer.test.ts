@@ -1,18 +1,44 @@
 import request from 'supertest'
 import server from '@/main/index'
 import { faker } from '@faker-js/faker'
+import { BcryptAdapter } from '@/infra/cryptography/bcrypter-adapter'
+import { db } from '@/infra/config/knexfile'
 
 let authToken: string
 let authTokenNotAllowed: string
+
 beforeAll(async () => {
+    const bcryptAdapter = new BcryptAdapter(10)
+    const users = [
+        {
+            email: faker.internet.email(),
+            password: await bcryptAdapter.hash('123'),
+            name: faker.person.fullName(),
+            phone: faker.phone.number(),
+            type: 'administrator',
+            status: 'active',
+            company_id: 1
+        },
+        {
+            email: faker.internet.email(),
+            password: await bcryptAdapter.hash('123'),
+            name: faker.person.fullName(),
+            phone: faker.phone.number(),
+            type: 'employee',
+            status: 'active',
+            company_id: 1
+        }
+    ]
+    await db('users').insert(users)
+
     const loginResponse = await request(server)
         .post('/auth/login')
-        .send({ email: 'gian_ss@live.com', password: '123' })
+        .send({ email: users[0].email, password: '123' })
     authToken = loginResponse.body.token
 
     const loginResponseNotAllowed = await request(server)
         .post('/auth/login')
-        .send({ email: 'igorfals@gmail.com', password: '123' })
+        .send({ email: users[1].email, password: '123' })
     authTokenNotAllowed = loginResponseNotAllowed.body.token
 })
 

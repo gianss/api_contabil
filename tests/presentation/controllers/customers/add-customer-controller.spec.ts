@@ -4,8 +4,8 @@ import { faker } from '@faker-js/faker'
 import { AddCustomerController } from '@/presentation/controllers/customers/add-customer-controller'
 import { MissingParamError } from '@/presentation/errors'
 import { throwError } from '@/tests/mocks'
-import { AddCustomerService, VerifyEmailCustomerService } from '@/domain/usecases/customers'
 import { CustomerRequest } from '@/presentation/dtos/customer-request'
+import { AddService, VerifyEmailUsedService } from '@/domain/usecases/repositories'
 
 const customerRequest: CustomerRequest = {
     phone: faker.phone.number(),
@@ -31,7 +31,7 @@ interface SutTypes {
     verifyEmailCustomerSpy: VerifyEmailCustomerSpy
 }
 
-class AddCustomerRepositorySpy implements AddCustomerService {
+class AddCustomerRepositorySpy implements AddService<CustomerRequest, Customer> {
     async add(request: CustomerRequest): Promise<Customer | undefined> {
         return customerResponse
     }
@@ -43,8 +43,8 @@ class ValidationSpy implements Validation {
     }
 }
 
-class VerifyEmailCustomerSpy implements VerifyEmailCustomerService {
-    async verify(email: string): Promise<boolean> {
+class VerifyEmailCustomerSpy implements VerifyEmailUsedService {
+    async verifyEmail(email: string): Promise<boolean> {
         return false
     }
 }
@@ -77,7 +77,7 @@ describe('addCustomerController', () => {
 
     test('should return status 400 if email in use', async () => {
         const { sut, verifyEmailCustomerSpy } = makeSut()
-        jest.spyOn(verifyEmailCustomerSpy, 'verify').mockResolvedValueOnce(true)
+        jest.spyOn(verifyEmailCustomerSpy, 'verifyEmail').mockResolvedValueOnce(true)
         const response = await sut.handle(customerRequest)
         expect(response.statusCode).toEqual(400)
     })
@@ -91,7 +91,7 @@ describe('addCustomerController', () => {
 
     test('should return status 500 if thrown', async () => {
         const { sut, verifyEmailCustomerSpy } = makeSut()
-        jest.spyOn(verifyEmailCustomerSpy, 'verify').mockImplementationOnce(throwError)
+        jest.spyOn(verifyEmailCustomerSpy, 'verifyEmail').mockImplementationOnce(throwError)
         const response = await sut.handle(customerRequest)
         expect(response.statusCode).toEqual(500)
     })

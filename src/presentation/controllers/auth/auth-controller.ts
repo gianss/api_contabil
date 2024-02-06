@@ -1,17 +1,17 @@
 import { User } from '@/domain/protocols/user'
 import { JwtHashDecoded } from '@/domain/usecases/auth'
-import { GetUserTokenService } from '@/domain/usecases/users/get-user-token'
+import { GetByTokenService } from '@/domain/usecases/repositories'
 
 export class AuthController {
     constructor(
         private readonly jwtHashVerify: JwtHashDecoded,
-        private readonly getUserTokenService: GetUserTokenService
+        private readonly getUserTokenService: GetByTokenService<User>
     ) { }
 
     async authorize(token: string, roles: string[]): Promise<{ next: boolean, user: User | undefined }> {
         try {
             await this.jwtHashVerify.decoded(token)
-            const user = await this.getUserTokenService.getUserToken(token)
+            const user = await this.getUserTokenService.getByToken(token)
             if (!user) {
                 return {
                     next: false,

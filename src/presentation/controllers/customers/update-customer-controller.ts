@@ -1,4 +1,5 @@
-import { UpdateCustomerService, VerifyEmailCustomerService } from '@/domain/usecases/customers'
+import { Customer } from '@/domain/protocols/customer'
+import { UpdateService, VerifyEmailUsedService } from '@/domain/usecases/repositories'
 import { UpdateControllerHandler } from '@/domain/usecases/update-controller-handle'
 import { CustomerRequest } from '@/presentation/dtos/customer-request'
 import { EmailInUseError } from '@/presentation/errors'
@@ -8,9 +9,9 @@ import { Validation } from '@/validation/protocols'
 
 export class UpdateCustomerController implements UpdateControllerHandler<CustomerRequest> {
     constructor(
-        private readonly updateCustomerService: UpdateCustomerService,
+        private readonly updateCustomerService: UpdateService<CustomerRequest, Customer>,
         private readonly validation: Validation,
-        private readonly verifyEmailCustomerService: VerifyEmailCustomerService
+        private readonly verifyEmailCustomerService: VerifyEmailUsedService
     ) { }
 
     async handle(request: CustomerRequest, id: number): Promise<HttpResponse> {
@@ -20,7 +21,7 @@ export class UpdateCustomerController implements UpdateControllerHandler<Custome
                 return badRequest(error)
             }
             const { name, email, phone, type, status, company_id, avatar } = request
-            const emailIsUsed = await this.verifyEmailCustomerService.verify(email, id)
+            const emailIsUsed = await this.verifyEmailCustomerService.verifyEmail(email, id)
             if (emailIsUsed) {
                 return badRequest(new EmailInUseError())
             }
