@@ -64,6 +64,13 @@ describe('AuthController Authorization', () => {
         expect(hasPermission.next).toEqual(false)
     })
 
+    test('should return status 401 if user is undefined', async () => {
+        const { sut, userRepositorySpy } = makeSut()
+        jest.spyOn(userRepositorySpy, 'getByToken').mockResolvedValueOnce(undefined)
+        const hasPermission = await sut.authorize('any_token', ['administrator'])
+        expect(hasPermission.next).toEqual(false)
+    })
+
     test('should return false if getUserTokenService returns undefined', async () => {
         const { sut, userRepositorySpy } = makeSut()
         jest.spyOn(userRepositorySpy, 'getByToken').mockRejectedValueOnce(undefined)

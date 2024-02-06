@@ -10,7 +10,7 @@ export const customerRequest = (): CustomerRequest => ({
     status: 'active',
     type: 'scheduling',
     avatar: '',
-    company_id: faker.number.int()
+    company_id: 1
 })
 
 export const customerResponse = (): Customer => ({
