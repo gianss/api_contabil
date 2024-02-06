@@ -1,5 +1,5 @@
 import { Customer } from '@/domain/protocols/customer'
-import { ControllerHandler } from '@/domain/usecases/controller-handle'
+import { ControllerHandler } from '@/domain/usecases/controllers/controller-handle'
 import { AddService, VerifyEmailUsedService } from '@/domain/usecases/repositories'
 import { CustomerRequest } from '@/presentation/dtos/customer-request'
 import { EmailInUseError } from '@/presentation/errors'

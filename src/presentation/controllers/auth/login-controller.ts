@@ -3,8 +3,8 @@ import { HashComparator, JwtHashGenerator } from '@/domain/usecases/auth'
 import { unauthorized, badRequest, ok, serverError } from '@/presentation/helpers/http-helper'
 import { HttpResponse } from '@/presentation/http/http-response'
 import { LoginRequest } from '@/presentation/dtos/login-request'
-import { ControllerHandler } from '@/domain/usecases/controller-handle'
 import { AddTokenService, AuthenticationService } from '@/domain/usecases/repositories'
+import { ControllerHandler } from '@/domain/usecases/controllers/controller-handle'
 
 export class LoginController implements ControllerHandler<LoginRequest> {
     constructor(

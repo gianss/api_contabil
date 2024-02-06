@@ -1,6 +1,6 @@
 import { Customer } from '@/domain/protocols/customer'
 import { UpdateService, VerifyEmailUsedService } from '@/domain/usecases/repositories'
-import { UpdateControllerHandler } from '@/domain/usecases/update-controller-handle'
+import { UpdateControllerHandler } from '@/domain/usecases/controllers/update-controller-handle'
 import { CustomerRequest } from '@/presentation/dtos/customer-request'
 import { EmailInUseError } from '@/presentation/errors'
 import { badRequest, ok, serverError } from '@/presentation/helpers/http-helper'
