@@ -1,3 +1,5 @@
+import { User } from '@/domain/protocols/user'
+
 export interface CustomerRequest {
     name: string
     phone: string
@@ -6,4 +8,5 @@ export interface CustomerRequest {
     type: string
     avatar: string
     company_id: number
+    loggedUser?: User
 }

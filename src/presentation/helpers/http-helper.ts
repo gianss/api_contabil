@@ -1,4 +1,4 @@
-import { ServerError, UnauthorizedError } from '@/presentation/errors'
+import { AccessDeniedError, ServerError, UnauthorizedError } from '@/presentation/errors'
 import { HttpResponse } from '../http/http-response'
 
 export const badRequest = (error: Error): HttpResponse => ({
@@ -6,14 +6,14 @@ export const badRequest = (error: Error): HttpResponse => ({
   body: error
 })
 
-export const forbidden = (error: Error): HttpResponse => ({
-  statusCode: 403,
-  body: error
-})
-
 export const unauthorized = (): HttpResponse => ({
   statusCode: 401,
   body: new UnauthorizedError()
+})
+
+export const acessDenied = (): HttpResponse => ({
+  statusCode: 403,
+  body: new AccessDeniedError()
 })
 
 export const serverError = (error: Error): HttpResponse => ({
@@ -26,7 +26,7 @@ export const ok = (data: any): HttpResponse => ({
   body: data
 })
 
-export const noContent = (): HttpResponse => ({
-  statusCode: 204,
-  body: null
-})
+// export const noContent = (): HttpResponse => ({
+//   statusCode: 204,
+//   body: null
+// })

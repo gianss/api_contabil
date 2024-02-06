@@ -3,8 +3,7 @@ import { CustomerRepository } from '@/infra/repositories/customer-repository'
 import {
     EmailValidation,
     RequiredFieldValidation,
-    ValidationComposite,
-    PermissionValidation
+    ValidationComposite
 } from '@/validation/validators'
 import { EmailValidatorAdapter } from '@/validation/validators/email-validator-adapter'
 import { Validation } from '@/validation/protocols'
@@ -37,35 +36,30 @@ export class CustomerMiddleware {
 
     public putUpdate = async (req: Request, res: Response): Promise<void> => {
         const validations: Validation[] = [
-            new PermissionValidation(req.user),
-            new RequiredFieldValidation('id'),
             new RequiredFieldValidation('name'),
             new RequiredFieldValidation('email'),
             new EmailValidation('email', this.emailValidator)
         ]
         const validation = new ValidationComposite(validations)
-        const controller = new UpdateCustomerController(this.customerRepository, validation, this.customerRepository)
-        const response = await controller.handle(req.body, parseInt(req.params.id))
+        const controller = new UpdateCustomerController(this.customerRepository, validation, this.customerRepository, this.customerRepository)
+        const response = await controller.handle({ ...req.body, loggedUser: req.user }, parseInt(req.params.id))
         res.status(response.statusCode).json(response.body)
     }
 
     public patchUpdate = async (req: Request, res: Response): Promise<void> => {
-        const validations: Validation[] = [
-            new PermissionValidation(req.user),
-            new RequiredFieldValidation('id')
-        ]
+        const validations: Validation[] = []
         if (req.body.email) {
             validations.push(new EmailValidation('email', this.emailValidator))
         }
         const validation = new ValidationComposite(validations)
-        const controller = new UpdateCustomerController(this.customerRepository, validation, this.customerRepository)
+        const controller = new UpdateCustomerController(this.customerRepository, validation, this.customerRepository, this.customerRepository)
         const response = await controller.handle(req.body, parseInt(req.params.id))
         res.status(response.statusCode).json(response.body)
     }
 
     public delete = async (req: Request, res: Response): Promise<void> => {
-        const controller = new DeleteCustomerController(this.customerRepository)
-        const response = await controller.handle(parseInt(req.params.id))
+        const controller = new DeleteCustomerController(this.customerRepository, this.customerRepository)
+        const response = await controller.handle(parseInt(req.params.id), req.user)
         res.status(response.statusCode).json(response.body)
     }
 }
