@@ -6,9 +6,12 @@ const router = Router()
 const customerMiddleware = new CustomerMiddleware()
 const authMiddleware = new AuthMiddleware()
 
-router.post('/', authMiddleware.checkPermissions(['administrator', 'company']), customerMiddleware.add)
-router.put('/:id', authMiddleware.checkPermissions(['administrator', 'company']), customerMiddleware.putUpdate)
-router.patch('/:id', authMiddleware.checkPermissions(['administrator', 'company']), customerMiddleware.patchUpdate)
-router.delete('/:id', authMiddleware.checkPermissions(['administrator', 'company']), customerMiddleware.delete)
+router.use(authMiddleware.checkPermissions(['administrator', 'company']))
+
+router.get('/', customerMiddleware.list)
+router.post('/', customerMiddleware.add)
+router.put('/:id', customerMiddleware.putUpdate)
+router.patch('/:id', customerMiddleware.patchUpdate)
+router.delete('/:id', customerMiddleware.delete)
 
 export default router

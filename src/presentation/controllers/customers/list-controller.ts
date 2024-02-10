@@ -14,7 +14,7 @@ export class ListCustomerController implements ControllerHandler<any> {
         try {
             const customers = await this.listCustomerRepository.getAll(request)
             const total = await this.listTotalCustomerRepository.getTotal(request)
-            return ok({ customers, total })
+            return ok({ total, customers })
         } catch (error) {
             return serverError(error)
         }

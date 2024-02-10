@@ -1,15 +1,26 @@
 import { Customer } from '@/domain/protocols/customer'
-import { AddService, GetIdService, UpdateService, VerifyEmailUsedService } from '@/domain/usecases/repositories'
+import { AddService, GetIdService, ListService, ListTotalService, UpdateService, VerifyEmailUsedService } from '@/domain/usecases/repositories'
 import { DeleteItemService } from '@/domain/usecases/repositories/delete-item-service'
 import { db } from '@/infra/config/knexfile'
 import { CustomerRequest } from '@/presentation/dtos/customer-request'
 
 export class CustomerRepository implements
+    ListService<Customer>,
+    ListTotalService,
     AddService<CustomerRequest, Customer>,
     VerifyEmailUsedService,
     UpdateService<CustomerRequest, Customer>,
     DeleteItemService<Customer>,
     GetIdService<Customer> {
+    async getTotal(request: any): Promise<number> {
+        const result: any = await db('customers').count('id as total').first()
+        return result.total
+    }
+
+    async getAll(request: any): Promise<Customer[]> {
+        return await db('customers')
+    }
+
     async getId(id: number): Promise<Customer> {
         return await db('customers').where('id', id).first()
     }

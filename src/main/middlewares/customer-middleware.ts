@@ -10,6 +10,7 @@ import { Validation } from '@/validation/protocols'
 import {
     AddCustomerController,
     DeleteCustomerController,
+    ListCustomerController,
     UpdateCustomerController
 } from '@/presentation/controllers/customers'
 
@@ -20,6 +21,12 @@ export class CustomerMiddleware {
     constructor() {
         this.customerRepository = new CustomerRepository()
         this.emailValidator = new EmailValidatorAdapter()
+    }
+
+    public list = async (req: Request, res: Response): Promise<void> => {
+        const controller = new ListCustomerController(this.customerRepository, this.customerRepository)
+        const response = await controller.handle({ ...req.query, loggedUser: req.user })
+        res.status(response.statusCode).json(response.body)
     }
 
     public add = async (req: Request, res: Response): Promise<void> => {

@@ -19,7 +19,7 @@ export class DeleteCustomerController implements DeleteControllerHandler {
                 return acessDenied()
             }
             const deletedCustomer = await this.deleteCustomerRepository.delete(id)
-            return ok(deletedCustomer)
+            return ok({ deletedItem: deletedCustomer })
         } catch (error) {
             return serverError(error)
         }
