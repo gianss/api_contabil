@@ -59,3 +59,13 @@ Para executar os testes do projeto, você pode usar os seguintes comandos:
   ```bash
   npm run test:ci
   ```
+
+## Documentação
+
+A documentação da API está disponível via Swagger UI. Para acessá-la, use o seguinte URL:
+
+```
+baseurl/api-docs
+```
+
+Substitua `baseurl` pelo endereço base do seu servidor onde a aplicação está hospedada. Isso fornecerá acesso à documentação interativa da API, permitindo que você visualize e teste facilmente os endpoints disponíveis.
