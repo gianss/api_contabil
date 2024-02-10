@@ -1,4 +1,4 @@
-# Projeto de Gerenciamento de Agendamentos, Contas a Pagar e Contas a Receber
+# Api de Gerenciamento de Agendamentos, Contas a Pagar e Contas a Receber
 
 Este é um projeto de software desenvolvido para facilitar o gerenciamento de agendamentos, contas a pagar e contas a receber. Ele oferece uma maneira conveniente de agendar compromissos, acompanhar pagamentos e receber pagamentos de clientes.
 
