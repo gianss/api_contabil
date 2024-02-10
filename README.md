@@ -10,25 +10,25 @@ Para iniciar o projeto, siga os seguintes passos:
 
 2. Execute o seguinte comando na raiz do projeto:
 
-   \`\`\`bash
+   ```bash
    docker-compose up -d
-   \`\`\`
+   ```
 
    Este comando irá iniciar os contêineres necessários em segundo plano.
 
 3. Em seguida, execute as migrações do banco de dados utilizando o Knex com o seguinte comando:
 
-   \`\`\`bash
+   ```bash
    npm run knex migrate:latest
-   \`\`\`
+   ```
 
    Este comando irá aplicar as migrações necessárias para criar as tabelas do banco de dados.
 
 4. Após as migrações, execute o comando para popular o banco de dados com dados iniciais (se houver):
 
-   \`\`\`bash
+   ```bash
    npm run knex seed:run
-   \`\`\`
+   ```
 
    Isso irá inserir dados de seed, se disponíveis, para preencher o banco de dados com informações básicas.
 
@@ -38,25 +38,24 @@ Para executar os testes do projeto, você pode usar os seguintes comandos:
 
 - Testes Unitários:
 
-  \`\`\`bash
+  ```bash
   npm run test:unit
-  \`\`\`
+  ```
 
 - Testes de Integração:
 
-  \`\`\`bash
+  ```bash
   npm run test:integration
-  \`\`\`
+  ```
 
 - Testes de Todos os Arquivos Modificados (Staged):
 
-  \`\`\`bash
+  ```bash
   npm run test:staged
-  \`\`\`
+  ```
 
 - Testes para Ambiente de Integração Contínua (CI) com cobertura:
 
-  \`\`\`bash
+  ```bash
   npm run test:ci
-  \`\`\`
-
+  ```
