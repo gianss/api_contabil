@@ -161,3 +161,19 @@ describe('Customer Endpoint Delete Tests', () => {
         expect(response.status).toBe(200)
     })
 })
+
+describe('Customer Endpoint List Tests', () => {
+    test('should return unauthorized with an invalid token', async () => {
+        const response = await request(server)
+            .get('/customer')
+            .set('x-access-token', 'any_token')
+        expect(response.status).toBe(401)
+    })
+
+    test('should return status 200 with an valid token', async () => {
+        const response = await request(server)
+            .get('/customer')
+            .set('x-access-token', authTokenCompany)
+        expect(response.status).toBe(200)
+    })
+})
