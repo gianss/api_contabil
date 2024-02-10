@@ -68,4 +68,5 @@ A documentação da API está disponível via Swagger UI. Para acessá-la, use o
 baseurl/api-docs
 ```
 
-Substitua `baseurl` pelo endereço base do seu servidor onde a aplicação está hospedada. Isso fornecerá acesso à documentação interativa da API, permitindo que você visualize e teste facilmente os endpoints disponíveis.
+Substitua `baseurl` pelo endereço base do seu servidor onde a aplicação está hospedada, por exemplo, `localhost:4000/api-docs`. Isso fornecerá acesso à documentação interativa da API, permitindo que você visualize e teste facilmente os endpoints disponíveis.
+
