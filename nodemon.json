@@ -2,9 +2,10 @@
   "verbose": true,
   "watch": [
     "src/**/*.ts",
-    "src/**/*.json"
+    "src/**/*.json",
+    "src/**/*.yaml"
   ],
-  "ext": "ts js json",
+  "ext": "ts js json yaml",
   "ignore": [
     "src/**/*.spec.ts"
   ],
