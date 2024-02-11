@@ -3,7 +3,9 @@ import { Knex } from 'knex'
 
 export async function seed(knex: Knex): Promise<void> {
     const bcryptAdapter = new BcryptAdapter(10)
+    await knex('tokens').del()
     await knex('users').del()
+    await knex('customers').del()
     await knex('companys').del()
     await knex('companys').insert(
         {
