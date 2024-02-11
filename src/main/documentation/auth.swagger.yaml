@@ -1,0 +1,43 @@
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      name: x-access-token
+      in: header
+
+  schemas:
+    Login:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+
+paths:
+  /auth/login:
+    post:
+      summary: "Login de usuário"
+      description: "Esta rota é usada para logar um usuário."
+      tags: ["auth"]
+      security: [{ ApiKeyAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Login"
+        examples:
+          example1:
+            value:
+              email: "joao@example.com"
+              password: "valid_password"
+      responses:
+        "200":
+          description: "Operação bem-sucedida."
+          content:
+            application/json:
+              example:
+                token: "valid_token"
+        "400":
+          description: "Parâmetros inválidos."

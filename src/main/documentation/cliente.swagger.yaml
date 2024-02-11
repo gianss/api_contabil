@@ -1,10 +1,4 @@
 components:
-  securitySchemes:
-    ApiKeyAuth:
-      type: apiKey
-      name: x-access-token
-      in: header
-
   schemas:
     Customer:
       type: object
