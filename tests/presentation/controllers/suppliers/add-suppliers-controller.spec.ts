@@ -1,6 +1,6 @@
 import { Suppliers } from '@/domain/protocols/suppliers'
 import { Validation } from '@/validation/protocols'
-import { AddSuppliersController } from '@/presentation/controllers/suppliers/add-controller'
+import { AddSupplierController } from '@/presentation/controllers/suppliers/add-controller'
 import { MissingParamError } from '@/presentation/errors'
 import { throwError } from '@/tests/mocks'
 import { SuppliersRequest } from '@/presentation/dtos/suppliers-request'
@@ -11,7 +11,7 @@ const request = suppliersRequest()
 const response = suppliersResponse()
 
 interface SutTypes {
-    sut: AddSuppliersController
+    sut: AddSupplierController
     addsuppliersRepositorySpy: AddSuppliersRepositorySpy
     validationSpy: ValidationSpy
     verifyEmailSuppliersSpy: VerifyEmailSuppliersSpy
@@ -40,7 +40,7 @@ const makeSut = (): SutTypes => {
     const validationSpy = new ValidationSpy()
     const verifyEmailSuppliersSpy = new VerifyEmailSuppliersSpy()
     return {
-        sut: new AddSuppliersController(addsuppliersRepositorySpy, validationSpy, verifyEmailSuppliersSpy),
+        sut: new AddSupplierController(addsuppliersRepositorySpy, validationSpy, verifyEmailSuppliersSpy),
         addsuppliersRepositorySpy,
         validationSpy,
         verifyEmailSuppliersSpy

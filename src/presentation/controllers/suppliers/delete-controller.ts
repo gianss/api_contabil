@@ -6,7 +6,7 @@ import { DeleteItemService } from '@/domain/usecases/repositories/delete-item-se
 import { acessDenied, ok, serverError } from '@/presentation/helpers/http-helper'
 import { HttpResponse } from '@/presentation/http/http-response'
 
-export class DeleteSuppliersController implements DeleteControllerHandler {
+export class DeleteSupplierController implements DeleteControllerHandler {
     constructor(
         private readonly deleteSuppliersRepository: DeleteItemService<Suppliers>,
         private readonly getSuppliersIdRepository: GetIdService<Suppliers>

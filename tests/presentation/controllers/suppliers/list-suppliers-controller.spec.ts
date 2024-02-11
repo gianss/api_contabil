@@ -1,10 +1,10 @@
 import { Suppliers } from '@/domain/protocols/suppliers'
 import { ListService, ListTotalService } from '@/domain/usecases/repositories'
-import { ListSuppliersController } from '@/presentation/controllers/suppliers/'
+import { ListSupplierController } from '@/presentation/controllers/suppliers/'
 import { throwError } from '@/tests/mocks'
 
 interface SutTypes {
-    sut: ListSuppliersController
+    sut: ListSupplierController
     listSuppliersRepositorySpy: ListSuppliersRepositorySpy
     listTotalSuppliersRepositorySpy: ListTotalSuppliersRepositorySpy
 }
@@ -25,7 +25,7 @@ const makeSut = (): SutTypes => {
     const listSuppliersRepositorySpy = new ListSuppliersRepositorySpy()
     const listTotalSuppliersRepositorySpy = new ListTotalSuppliersRepositorySpy()
     return {
-        sut: new ListSuppliersController(listSuppliersRepositorySpy, listTotalSuppliersRepositorySpy),
+        sut: new ListSupplierController(listSuppliersRepositorySpy, listTotalSuppliersRepositorySpy),
         listSuppliersRepositorySpy,
         listTotalSuppliersRepositorySpy
     }

@@ -7,7 +7,7 @@ import { badRequest, ok, serverError } from '@/presentation/helpers/http-helper'
 import { HttpResponse } from '@/presentation/http/http-response'
 import { Validation } from '@/validation/protocols'
 
-export class AddSuppliersController implements ControllerHandler<SuppliersRequest> {
+export class AddSupplierController implements ControllerHandler<SuppliersRequest> {
     constructor(
         private readonly addSuppliersRepository: AddService<SuppliersRequest, Suppliers>,
         private readonly validation: Validation,

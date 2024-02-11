@@ -4,7 +4,7 @@ import { ListService, ListTotalService } from '@/domain/usecases/repositories'
 import { ok, serverError } from '@/presentation/helpers/http-helper'
 import { HttpResponse } from '@/presentation/http/http-response'
 
-export class ListSuppliersController implements ControllerHandler<any> {
+export class ListSupplierController implements ControllerHandler<any> {
     constructor(
         private readonly listSuppliersRepository: ListService<Suppliers>,
         private readonly listTotalSuppliersRepository: ListTotalService

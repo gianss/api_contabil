@@ -7,7 +7,7 @@ import { acessDenied, badRequest, ok, serverError } from '@/presentation/helpers
 import { HttpResponse } from '@/presentation/http/http-response'
 import { Validation } from '@/validation/protocols'
 
-export class UpdateSuppliersController implements UpdateControllerHandler<SuppliersRequest> {
+export class UpdateSupplierController implements UpdateControllerHandler<SuppliersRequest> {
     constructor(
         private readonly updateSuppliersRepository: UpdateService<SuppliersRequest, Suppliers>,
         private readonly validation: Validation,

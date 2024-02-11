@@ -2,7 +2,7 @@
 import { Suppliers } from '@/domain/protocols/suppliers'
 import { GetIdService } from '@/domain/usecases/repositories'
 import { DeleteItemService } from '@/domain/usecases/repositories/delete-item-service'
-import { DeleteSuppliersController } from '@/presentation/controllers/suppliers/'
+import { DeleteSupplierController } from '@/presentation/controllers/suppliers/'
 import { throwError } from '@/tests/mocks'
 import { suppliersResponse } from '@/tests/mocks/mock-suppliers'
 import { userResponse } from '@/tests/mocks/mock-user'
@@ -11,7 +11,7 @@ const response = suppliersResponse()
 const userRes = userResponse('company')
 
 interface SutTypes {
-    sut: DeleteSuppliersController
+    sut: DeleteSupplierController
     deleteSuppliersRepositorySpy: DeleteSuppliersRepositorySpy
     getSuppliersIdRepositorySpy: GetSuppliersIdRepositorySpy
 }
@@ -32,7 +32,7 @@ const makeSut = (): SutTypes => {
     const deleteSuppliersRepositorySpy = new DeleteSuppliersRepositorySpy()
     const getSuppliersIdRepositorySpy = new GetSuppliersIdRepositorySpy()
     return {
-        sut: new DeleteSuppliersController(deleteSuppliersRepositorySpy, getSuppliersIdRepositorySpy),
+        sut: new DeleteSupplierController(deleteSuppliersRepositorySpy, getSuppliersIdRepositorySpy),
         deleteSuppliersRepositorySpy,
         getSuppliersIdRepositorySpy
     }

@@ -1,7 +1,7 @@
 
 import { Suppliers } from '@/domain/protocols/suppliers'
 import { GetIdService, UpdateService, VerifyEmailUsedService } from '@/domain/usecases/repositories'
-import { UpdateSuppliersController } from '@/presentation/controllers/suppliers/'
+import { UpdateSupplierController } from '@/presentation/controllers/suppliers/'
 import { SuppliersRequest } from '@/presentation/dtos/suppliers-request'
 import { AccessDeniedError, InvalidParamError, MissingParamError } from '@/presentation/errors'
 import { throwError } from '@/tests/mocks'
@@ -29,7 +29,7 @@ class VerifyEmailSuppliersSpy implements VerifyEmailUsedService {
 }
 
 interface SutTypes {
-    sut: UpdateSuppliersController
+    sut: UpdateSupplierController
     validationSpy: ValidationSpy
     verifyEmailSuppliersSpy: VerifyEmailSuppliersSpy
     updateSuppliersRepositorySpy: UpdateSuppliersRepositorySpy
@@ -54,7 +54,7 @@ const makeSut = (): SutTypes => {
     const updateSuppliersRepositorySpy = new UpdateSuppliersRepositorySpy()
     const getSuppliersIdRepositorySpy = new GetSuppliersIdRepositorySpy()
     return {
-        sut: new UpdateSuppliersController(updateSuppliersRepositorySpy, validationSpy, verifyEmailSuppliersSpy, getSuppliersIdRepositorySpy),
+        sut: new UpdateSupplierController(updateSuppliersRepositorySpy, validationSpy, verifyEmailSuppliersSpy, getSuppliersIdRepositorySpy),
         validationSpy,
         verifyEmailSuppliersSpy,
         updateSuppliersRepositorySpy,
