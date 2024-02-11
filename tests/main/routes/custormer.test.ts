@@ -18,6 +18,30 @@ const customerAdd = {
 }
 
 const createAuthToken = async (email: string, type: string, company: number = 1): Promise<string> => {
+    await db('tokens').truncate()
+    await db('users').truncate()
+    await db('customers').truncate()
+    await db('companys').truncate()
+    await db('companys').insert([
+        {
+            name: faker.person.fullName(),
+            phone: faker.phone.number(),
+            email: faker.internet.email(),
+            status: 'active'
+        },
+        {
+            name: faker.person.fullName(),
+            phone: faker.phone.number(),
+            email: faker.internet.email(),
+            status: 'active'
+        },
+        {
+            name: faker.person.fullName(),
+            phone: faker.phone.number(),
+            email: faker.internet.email(),
+            status: 'active'
+        }
+    ])
     const bcryptAdapter = new BcryptAdapter(10)
     const passwordHash = await bcryptAdapter.hash('123')
     const user = {
