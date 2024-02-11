@@ -35,6 +35,32 @@ paths:
       description: "Esta rota é usada para listar todos os clientes de todas as companhias cadastradas no sistema."
       tags: ["Customer"]
       security: [{ ApiKeyAuth: [] }]
+      parameters:
+        - name: search
+          in: query
+          description: "Termo de pesquisa por nome ou e-mail."
+          required: false
+          schema:
+            type: string
+        - name: status
+          in: query
+          description: "Especifique o status dos itens a serem pesquisados. Valores válidos são 'active' ou 'inactive'."
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: "Limite máximo de itens a serem retornados na requisição."
+          required: false
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          description: "Número de itens a serem ignorados no início da resposta."
+          required: false
+          schema:
+            type: integer
+
       responses:
         "200":
           description: "Operação bem-sucedida."

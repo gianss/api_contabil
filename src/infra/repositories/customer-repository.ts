@@ -6,7 +6,25 @@ import { CustomerRequest } from '@/presentation/dtos/customer-request'
 
 export class TotalListCustomerRepository implements ListTotalService {
     async getTotal(request: any): Promise<number> {
-        const result: any = await db('customers').count('id as total').first()
+        const result: any = await db('customers')
+            .count('id as total')
+            .andWhere(function (): void {
+                if (request.search) {
+                    this.where('name', 'like', `%${request.search}%`)
+                        .orWhere('email', 'like', `%${request.search}%`)
+                }
+            })
+            .andWhere(function (): void {
+                if (request.status) {
+                    this.where('status', request.status)
+                }
+            })
+            .andWhere(function (): void {
+                if (request.cod_company) {
+                    this.where('cod_company', request.cod_company)
+                }
+            })
+            .first()
         return result.total
     }
 }
@@ -14,6 +32,23 @@ export class TotalListCustomerRepository implements ListTotalService {
 export class ListCustomerRepository implements ListService<Customer> {
     async getAll(request: any): Promise<Customer[]> {
         return await db('customers')
+            .andWhere(function (): void {
+                if (request.search) {
+                    this.where('name', 'like', `%${request.search}%`)
+                        .orWhere('email', 'like', `%${request.search}%`)
+                }
+            })
+            .andWhere(function (): void {
+                if (request.status) {
+                    this.where('status', request.status)
+                }
+            })
+            .andWhere(function (): void {
+                if (request.cod_company) {
+                    this.where('cod_company', request.cod_company)
+                }
+            })
+            .offset(request.offset || '0').limit(request.limit || 10)
     }
 }
 
