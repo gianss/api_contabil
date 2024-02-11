@@ -1,4 +1,4 @@
-import { Customer } from '@/domain/protocols/customer'
+import { Suppliers } from '@/domain/protocols/suppliers'
 import { User } from '@/domain/protocols/user'
 import { DeleteControllerHandler } from '@/domain/usecases/controllers/delete-controller-handle'
 import { GetIdService } from '@/domain/usecases/repositories'
@@ -6,20 +6,20 @@ import { DeleteItemService } from '@/domain/usecases/repositories/delete-item-se
 import { acessDenied, ok, serverError } from '@/presentation/helpers/http-helper'
 import { HttpResponse } from '@/presentation/http/http-response'
 
-export class DeleteCustomerController implements DeleteControllerHandler {
+export class DeleteSuppliersController implements DeleteControllerHandler {
     constructor(
-        private readonly deleteCustomerRepository: DeleteItemService<Customer>,
-        private readonly getCustomerIdRepository: GetIdService<Customer>
+        private readonly deleteSuppliersRepository: DeleteItemService<Suppliers>,
+        private readonly getSuppliersIdRepository: GetIdService<Suppliers>
     ) { }
 
     async handle(id: number, loggedUser: User): Promise<HttpResponse> {
         try {
-            const singleCustomer = await this.getCustomerIdRepository.getId(id)
-            if (singleCustomer.company_id !== loggedUser.company_id) {
+            const singleSuppliers = await this.getSuppliersIdRepository.getId(id)
+            if (singleSuppliers.company_id !== loggedUser.company_id) {
                 return acessDenied()
             }
-            const deletedCustomer = await this.deleteCustomerRepository.delete(id)
-            return ok({ deletedItem: deletedCustomer })
+            const deletedSuppliers = await this.deleteSuppliersRepository.delete(id)
+            return ok({ deletedItem: deletedSuppliers })
         } catch (error) {
             return serverError(error)
         }
