@@ -1,5 +1,5 @@
 import { AddCustomerRepository, DeleteCustomerRepository, GetCustomerIdRepository, ListCustomerRepository, TotalListCustomerRepository, UpdateCustomerRepository, VerifyEmailCustomerRepository } from '@/infra/repositories/customer-repository'
-import { AddCustomerController, DeleteCustomerController, ListCustomerController, UpdateCustomerController } from '@/presentation/controllers/customers'
+import { AddCustomerController, DeleteCustomerController, ListCustomerController, UpdateCustomerController } from '@/presentation/controllers/customers/'
 import { Validation } from '@/validation/protocols'
 import { EmailValidation, RequiredFieldValidation, ValidationComposite } from '@/validation/validators'
 import { EmailValidatorAdapter } from '@/validation/validators/email-validator-adapter'
