@@ -9,8 +9,6 @@ components:
     Customer:
       type: object
       properties:
-        id:
-          type: number
         name:
           type: string
         phone:
@@ -25,8 +23,6 @@ components:
         type:
           type: string
           enum: [receivable, scheduling]
-        company_id:
-          type: number
 
 paths:
   /customer:
@@ -45,6 +41,12 @@ paths:
         - name: status
           in: query
           description: "Especifique o status dos itens a serem pesquisados. Valores válidos são 'active' ou 'inactive'."
+          required: false
+          schema:
+            type: string
+        - name: type
+          in: query
+          description: "Especifique o type dos itens a serem pesquisados. Valores válidos são 'scheduling' ou 'receivable'."
           required: false
           schema:
             type: string
@@ -127,16 +129,16 @@ paths:
             application/json:
               example:
                 data:
-                  - id: 3
-                    name: "Carol Wyman"
-                    phone: null
-                    email: "Geovanny.Rodriguez@hotmail.com"
-                    avatar: null
-                    status: "active"
-                    type: "receivable"
-                    company_id: 1
-                    created_at: "2024-02-07T01:03:26.000Z"
-                    updated_at: "2024-02-07T01:03:26.000Z"
+                  id: 3
+                  name: "Carol Wyman"
+                  phone: null
+                  email: "Geovanny.Rodriguez@hotmail.com"
+                  avatar: null
+                  status: "active"
+                  type: "receivable"
+                  company_id: 1
+                  created_at: "2024-02-07T01:03:26.000Z"
+                  updated_at: "2024-02-07T01:03:26.000Z"
         "400":
           description: "Parâmetros inválidos."
         "401":
@@ -181,16 +183,16 @@ paths:
             application/json:
               example:
                 data:
-                  - id: 3
-                    name: "Carol Wyman"
-                    phone: null
-                    email: "Geovanny.Rodriguez@hotmail.com"
-                    avatar: null
-                    status: "active"
-                    type: "receivable"
-                    company_id: 1
-                    created_at: "2024-02-07T01:03:26.000Z"
-                    updated_at: "2024-02-07T01:03:26.000Z"
+                  id: 3
+                  name: "Carol Wyman"
+                  phone: null
+                  email: "Geovanny.Rodriguez@hotmail.com"
+                  avatar: null
+                  status: "active"
+                  type: "receivable"
+                  company_id: 1
+                  created_at: "2024-02-07T01:03:26.000Z"
+                  updated_at: "2024-02-07T01:03:26.000Z"
         "400":
           description: "Parâmetros inválidos."
         "401":

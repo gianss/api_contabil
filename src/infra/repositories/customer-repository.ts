@@ -20,6 +20,11 @@ export class TotalListCustomerRepository implements ListTotalService {
                 }
             })
             .andWhere(function (): void {
+                if (request.type) {
+                    this.where('type', request.type)
+                }
+            })
+            .andWhere(function (): void {
                 if (request.cod_company) {
                     this.where('cod_company', request.cod_company)
                 }
@@ -41,6 +46,11 @@ export class ListCustomerRepository implements ListService<Customer> {
             .andWhere(function (): void {
                 if (request.status) {
                     this.where('status', request.status)
+                }
+            })
+            .andWhere(function (): void {
+                if (request.type) {
+                    this.where('type', request.type)
                 }
             })
             .andWhere(function (): void {
