@@ -1,0 +1,245 @@
+components:
+  schemas:
+    Supplier:
+      type: object
+      properties:
+        name:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+        status:
+          type: string
+          enum: [active, inactive]
+
+paths:
+  /supplier:
+    get:
+      summary: "Listar todos os suppliers"
+      description: "Esta rota é usada para listar todos os clientes de todas as companhias cadastradas no sistema."
+      tags: ["Supplier"]
+      security: [{ ApiKeyAuth: [] }]
+      parameters:
+        - name: search
+          in: query
+          description: "Termo de pesquisa por nome ou e-mail."
+          required: false
+          schema:
+            type: string
+        - name: status
+          in: query
+          description: "Especifique o status dos itens a serem pesquisados. Valores válidos são 'active' ou 'inactive'."
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: "Limite máximo de itens a serem retornados na requisição."
+          required: false
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          description: "Número de itens a serem ignorados no início da resposta."
+          required: false
+          schema:
+            type: integer
+
+      responses:
+        "200":
+          description: "Operação bem-sucedida."
+          content:
+            application/json:
+              example:
+                total: 138
+                suppliers:
+                  - id: 1
+                    name: "Dr. Oliver Romaguera"
+                    phone: null
+                    email: "Alexzander.Dickens50@gmail.com"
+                    status: "active"
+                    company_id: 1
+                    created_at: "2024-02-06T23:35:41.000Z"
+                    updated_at: "2024-02-06T23:35:41.000Z"
+                  - id: 2
+                    name: "Dr. Theresa Ziemann"
+                    phone: null
+                    email: "Dangelo71@hotmail.com"
+                    status: "active"
+                    company_id: 1
+                    created_at: "2024-02-07T01:03:26.000Z"
+                    updated_at: "2024-02-07T01:03:26.000Z"
+                  - id: 3
+                    name: "Carol Wyman"
+                    email: "Geovanny.Rodriguez@hotmail.com"
+                    avatar: null
+                    status: "active"
+                    company_id: 1
+                    created_at: "2024-02-07T01:03:26.000Z"
+                    updated_at: "2024-02-07T01:03:26.000Z"
+
+    post:
+      summary: "Cadastro de supplier"
+      description: "Esta rota é usada para cadastrar um novo cliente em uma companhia."
+      tags: ["Supplier"]
+      security: [{ ApiKeyAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Supplier"
+        examples:
+          example1:
+            value:
+              name: "João da Silva"
+              phone: "(99) 9999-9999"
+              email: "joao@example.com"
+              status: "active"
+              company_id: 1
+      responses:
+        "200":
+          description: "Operação bem-sucedida."
+          content:
+            application/json:
+              example:
+                data:
+                  id: 3
+                  name: "Carol Wyman"
+                  phone: null
+                  email: "Geovanny.Rodriguez@hotmail.com"
+                  status: "active"
+                  company_id: 1
+                  created_at: "2024-02-07T01:03:26.000Z"
+                  updated_at: "2024-02-07T01:03:26.000Z"
+        "400":
+          description: "Parâmetros inválidos."
+        "401":
+          description: "Sem autorização."
+        "403":
+          description: "Acesso bloqueado."
+
+  /supplier/{id}:
+    parameters:
+      - name: id
+        in: path
+        description: "ID do cliente"
+        required: true
+        schema:
+          type: number
+
+    put:
+      summary: "Atualizar o supplier"
+      description: "Esta rota é usada para atualizar as informações de um cliente existente."
+      tags: ["Supplier"]
+      security: [{ ApiKeyAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Supplier"
+        examples:
+          example1:
+            value:
+              id: 1
+              name: "João da Silva"
+              phone: "(99) 9999-9999"
+              email: "joao@example.com"
+              status: "active"
+              type: "receivable"
+              company_id: 1
+      responses:
+        "200":
+          description: "Operação bem-sucedida."
+          content:
+            application/json:
+              example:
+                data:
+                  id: 3
+                  name: "Carol Wyman"
+                  phone: null
+                  email: "Geovanny.Rodriguez@hotmail.com"
+                  avatar: null
+                  status: "active"
+                  type: "receivable"
+                  company_id: 1
+                  created_at: "2024-02-07T01:03:26.000Z"
+                  updated_at: "2024-02-07T01:03:26.000Z"
+        "400":
+          description: "Parâmetros inválidos."
+        "401":
+          description: "Sem autorização."
+        "403":
+          description: "Acesso bloqueado."
+
+    patch:
+      summary: "Atualizar o supplier"
+      description: "Esta rota é usada para atualizar as informações de um cliente existente."
+      tags: ["Supplier"]
+      security: [{ ApiKeyAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Supplier"
+        examples:
+          example1:
+            value:
+              id: 1
+              name: "João da Silva"
+              phone: "(99) 9999-9999"
+              email: "joao@example.com"
+              status: "active"
+              company_id: 1
+      responses:
+        "200":
+          description: "Operação bem-sucedida."
+          content:
+            application/json:
+              example:
+                data:
+                  id: 3
+                  name: "Carol Wyman"
+                  phone: null
+                  email: "Geovanny.Rodriguez@hotmail.com"
+                  avatar: null
+                  status: "active"
+                  company_id: 1
+                  created_at: "2024-02-07T01:03:26.000Z"
+                  updated_at: "2024-02-07T01:03:26.000Z"
+        "400":
+          description: "Parâmetros inválidos."
+        "401":
+          description: "Sem autorização."
+        "403":
+          description: "Acesso bloqueado."
+
+    delete:
+      summary: "Deletar supplier"
+      description: "Esta rota é usada para deletar um cliente existente."
+      tags: ["Supplier"]
+      security: [{ ApiKeyAuth: [] }]
+      responses:
+        "200":
+          description: "Operação bem-sucedida."
+          content:
+            application/json:
+              example:
+                deletedItem:
+                  id: 3
+                  name: "Carol Wyman"
+                  phone: null
+                  email: "Geovanny.Rodriguez@hotmail.com"
+                  status: "active"
+                  company_id: 1
+                  created_at: "2024-02-07T01:03:26.000Z"
+                  updated_at: "2024-02-07T01:03:26.000Z"
+        "400":
+          description: "Parâmetros inválidos."
+        "401":
+          description: "Sem autorização."
+        "403":
+          description: "Acesso bloqueado."

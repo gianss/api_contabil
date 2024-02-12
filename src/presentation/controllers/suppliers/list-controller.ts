@@ -12,9 +12,9 @@ export class ListSupplierController implements ControllerHandler<any> {
 
     async handle(request: any): Promise<HttpResponse> {
         try {
-            const supplierss = await this.listSuppliersRepository.getAll(request)
+            const suppliers = await this.listSuppliersRepository.getAll(request)
             const total = await this.listTotalSuppliersRepository.getTotal(request)
-            return ok({ total, supplierss })
+            return ok({ total, suppliers })
         } catch (error) {
             return serverError(error)
         }
