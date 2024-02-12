@@ -8,12 +8,12 @@ let authToken: string
 let authTokenCompany: string
 let authTokenCompany2: string
 let authTokenNotAllowed: string
-let customerId: any
-let customer2Id: any
+let supplierId: any
+let supplier2Id: any
 let company1Id: any
 let company2Id: any
 
-const customerAdd = {
+const supplierAdd = {
     name: faker.person.fullName(),
     email: faker.internet.email()
 }
@@ -58,8 +58,8 @@ beforeAll(async () => {
     authTokenNotAllowed = await createAuthToken(faker.internet.email(), 'employee', company1Id[0])
 
     // Adiciona clientes e obtém os IDs
-    customerId = await db('customers').insert({ ...customerAdd, company_id: company1Id[0] })
-    customer2Id = await db('customers').insert({
+    supplierId = await db('suppliers').insert({ ...supplierAdd, company_id: company1Id[0] })
+    supplier2Id = await db('suppliers').insert({
         name: faker.person.fullName(),
         email: faker.internet.email(),
         company_id: company2Id[0]
@@ -70,10 +70,10 @@ afterAll((done) => {
     server.close(done) // Feche o servidor após todos os testes
 })
 
-describe('Customer Endpoint ADD Tests', () => {
-    test('should create a customer with a valid token', async () => {
+describe('Supplier Endpoint ADD Tests', () => {
+    test('should create a supplier with a valid token', async () => {
         const response = await request(server)
-            .post('/customer')
+            .post('/supplier')
             .set('x-access-token', authToken)
             .send({ name: faker.person.fullName(), email: faker.internet.email() })
         expect(response.status).toBe(200)
@@ -82,7 +82,7 @@ describe('Customer Endpoint ADD Tests', () => {
 
     test('should return status 400 if missingParams', async () => {
         const response = await request(server)
-            .post('/customer')
+            .post('/supplier')
             .set('x-access-token', authToken)
             .send({ name: faker.person.fullName() })
         expect(response.status).toBe(400)
@@ -90,7 +90,7 @@ describe('Customer Endpoint ADD Tests', () => {
 
     test('should return unauthorized with an invalid token', async () => {
         const response = await request(server)
-            .post('/customer')
+            .post('/supplier')
             .set('x-access-token', 'any_token')
             .send({ name: faker.person.fullName(), email: faker.internet.email() })
         expect(response.status).toBe(401)
@@ -98,42 +98,42 @@ describe('Customer Endpoint ADD Tests', () => {
 
     test('should return 401 if not allowed', async () => {
         const response = await request(server)
-            .post('/customer')
+            .post('/supplier')
             .set('x-access-token', authTokenNotAllowed)
             .send({ name: faker.person.fullName(), email: faker.internet.email() })
         expect(response.status).toBe(401)
     })
 })
 
-describe('Customer Endpoint Update Tests', () => {
-    test('should update a customer with a valid token', async () => {
+describe('Supplier Endpoint Update Tests', () => {
+    test('should update a supplier with a valid token', async () => {
         const response = await request(server)
-            .put(`/customer/${customerId[0]}`)
+            .put(`/supplier/${supplierId[0]}`)
             .set('x-access-token', authTokenCompany)
-            .send({ name: faker.person.fullName(), email: customerAdd.email })
+            .send({ name: faker.person.fullName(), email: supplierAdd.email })
         expect(response.status).toBe(200)
         expect(response.body.data).toBeDefined()
     })
 
     test('should return status 400 if the email is already in use', async () => {
         const response = await request(server)
-            .put(`/customer/${customer2Id[0]}`)
+            .put(`/supplier/${supplier2Id[0]}`)
             .set('x-access-token', authTokenCompany2)
-            .send({ name: faker.person.fullName(), email: customerAdd.email })
+            .send({ name: faker.person.fullName(), email: supplierAdd.email })
         expect(response.status).toBe(400)
     })
 
     test('should return status 403 if you try to change content from other companies', async () => {
         const response = await request(server)
-            .put(`/customer/${customerId[0]}`)
+            .put(`/supplier/${supplierId[0]}`)
             .set('x-access-token', authTokenCompany2)
-            .send({ name: faker.person.fullName(), email: customerAdd.email })
+            .send({ name: faker.person.fullName(), email: supplierAdd.email })
         expect(response.status).toBe(403)
     })
 
     test('should return 401 if not allowed', async () => {
         const response = await request(server)
-            .put(`/customer/${customerId[0]}`)
+            .put(`/supplier/${supplierId[0]}`)
             .set('x-access-token', authTokenNotAllowed)
             .send({ name: faker.person.fullName(), email: faker.internet.email() })
         expect(response.status).toBe(401)
@@ -141,54 +141,54 @@ describe('Customer Endpoint Update Tests', () => {
 
     test('should return unauthorized with an invalid token', async () => {
         const response = await request(server)
-            .put(`/customer/${customerId[0]}`)
+            .put(`/supplier/${supplierId[0]}`)
             .set('x-access-token', 'any_token')
             .send({ name: faker.person.fullName(), email: faker.internet.email() })
         expect(response.status).toBe(401)
     })
 })
 
-describe('Customer Endpoint Delete Tests', () => {
+describe('Supplier Endpoint Delete Tests', () => {
     test('should return unauthorized with an invalid token', async () => {
         const response = await request(server)
-            .delete(`/customer/${customerId[0]}`)
+            .delete(`/supplier/${supplierId[0]}`)
             .set('x-access-token', 'any_token')
         expect(response.status).toBe(401)
     })
 
     test('should return 401 if not allowed', async () => {
         const response = await request(server)
-            .delete(`/customer/${customerId[0]}`)
+            .delete(`/supplier/${supplierId[0]}`)
             .set('x-access-token', authTokenNotAllowed)
         expect(response.status).toBe(401)
     })
 
     test('should return status 403 if you try to change content from other companies', async () => {
         const response = await request(server)
-            .delete(`/customer/${customerId[0]}`)
+            .delete(`/supplier/${supplierId[0]}`)
             .set('x-access-token', authTokenCompany2)
         expect(response.status).toBe(403)
     })
 
-    test('should delete a customer with a valid token', async () => {
+    test('should delete a supplier with a valid token', async () => {
         const response = await request(server)
-            .delete(`/customer/${customerId[0]}`)
+            .delete(`/supplier/${supplierId[0]}`)
             .set('x-access-token', authTokenCompany)
         expect(response.status).toBe(200)
     })
 })
 
-describe('Customer Endpoint List Tests', () => {
+describe('Supplier Endpoint List Tests', () => {
     test('should return unauthorized with an invalid token', async () => {
         const response = await request(server)
-            .get('/customer')
+            .get('/supplier')
             .set('x-access-token', 'any_token')
         expect(response.status).toBe(401)
     })
 
     test('should return status 200 with an valid token', async () => {
         const response = await request(server)
-            .get('/customer')
+            .get('/supplier')
             .set('x-access-token', authTokenCompany)
         expect(response.status).toBe(200)
     })
