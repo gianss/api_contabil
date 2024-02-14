@@ -15,6 +15,7 @@ export const payableAccountRequest = (): PayableAccountRequest => ({
 export const payableAccountResponse = (): PayableAccounts => ({
     ...payableAccountRequest(),
     id: faker.number.int(),
+    company_id: 1,
     created_at: faker.date.anytime(),
     updated_at: faker.date.anytime()
 })
